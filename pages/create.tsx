@@ -116,7 +116,7 @@ const Create = () => {
       toast.error('Cheat Sheet Name is required.')
       return
     }
-    if (!cardInputs?.length) {
+    if (!cardInputs?.filter((c) => c).length) {
       toast.error('At least one card is required.')
       return
     }
