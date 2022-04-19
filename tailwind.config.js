@@ -8,14 +8,14 @@ module.exports = {
       colors: {
         primary: {
           1: "#FFFFFF",
-          2: "#F1F1F1",
-          3: "#FFF9E8",
-          4: "#FFC107",
-          orange: {
-            1: "#FF5722",
+          2: "#FFFFFF",
+          3: "#F7F7F7",
+          4: "#FFD124",
+          pink: {
+            1: "#F24A72",
           },
           dark: {
-            1: "#291E4F",
+            1: "#203239",
           },
         },
       },

@@ -7,7 +7,7 @@ const Footer = () => {
       This project is made by
       <Link href="https://twitter.com/dawsoncodes">
         <a target={'_blank'}>
-          <span className="text-primary-orange-1"> @Dawson</span>
+          <span className="text-primary-pink-1"> @Dawson</span>
         </a>
       </Link>
     </div>

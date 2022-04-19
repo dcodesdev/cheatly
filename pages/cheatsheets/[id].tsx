@@ -23,7 +23,7 @@ const Card: FC<ICardProps> = ({ className, text, cardNumber, ...rest }) => {
     >
       <div className="p-10">{text}</div>
 
-      <div className="text-primary-orange-1 font-bold p-3 text-right">
+      <div className="text-primary-pink-1 font-bold p-3 text-right">
         {cardNumber}
       </div>
     </div>
@@ -66,7 +66,7 @@ const CheatsheetPage: FC<{ cheatsheet: CheatsheetType }> = ({ cheatsheet }) => {
 
         {/* <p className="text-[#949494] font-bold text-3xl mt-5">
           Cheatsheet by
-          <span className="text-primary-orange-1">Jon Doe</span>
+          <span className="text-primary-pink-1">Jon Doe</span>
         </p> */}
 
         <Card
