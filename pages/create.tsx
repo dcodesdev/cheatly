@@ -4,6 +4,7 @@ import React, {
   FormEventHandler,
   HTMLAttributes,
   InputHTMLAttributes,
+  useEffect,
   useState,
 } from 'react'
 import toast from 'react-hot-toast'
@@ -12,7 +13,10 @@ import TextArea from '../components/inputs/TextArea'
 import Footer from '../components/layout/Footer'
 import Navbar from '../components/layout/Navbar'
 import H1 from '../components/typography/H1'
-import H2 from '../components/typography/H2'
+import axios from 'axios'
+import Router from 'next/router'
+import { useLocalStorage } from 'react-use'
+import { trackPromise } from 'react-promise-tracker'
 
 interface ILabelProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}
@@ -58,26 +62,46 @@ const Detail: FC<IDetailProps> = ({ className, children, ...rest }) => {
   )
 }
 
-const Create = () => {
-  const [name, setName] = useState('')
-  const [cheatSheetName, setCheatSheetName] = useState('')
+const useCards = () => {
   const [cardInputs, setCardInputs] = useState<string[]>([''])
+
+  const [localCards, setLocalCards] = useLocalStorage<string[]>('cards', [])
+
+  useEffect(() => {
+    setLocalCards(cardInputs)
+  }, [cardInputs]) // eslint-disable-line
+
+  useEffect(() => {
+    setCardInputs(localCards || [''])
+  }, []) // eslint-disable-line
+
+  return { cardInputs, setCardInputs }
+}
+
+const Create = () => {
+  const [name, setName] = useLocalStorage('name', '')
+  const [cheatSheetName, setCheatSheetName] = useLocalStorage(
+    'cheatsheetName',
+    '',
+  )
+
+  const { cardInputs, setCardInputs } = useCards()
 
   const handleCardInputChange = (index: number, value: string) => {
     if (value.length > 300) return
+
     setCardInputs((p) =>
-      p.map((input, _idx) => {
+      p.map((card, _idx) => {
         if (_idx === index) {
           return value
         }
-
-        return input
+        return card
       }),
     )
   }
 
   const addNewCard = () => {
-    const newCards = cardInputs.filter((i) => i)
+    const newCards = cardInputs?.filter((i) => i) || []
 
     setCardInputs([...newCards, ''])
   }
@@ -92,10 +116,28 @@ const Create = () => {
       toast.error('Cheat Sheet Name is required.')
       return
     }
-    if (!cardInputs.length) {
+    if (!cardInputs?.length) {
       toast.error('At least one card is required.')
       return
     }
+
+    trackPromise(
+      axios
+        .post('/api/cheatsheets', {
+          name: cheatSheetName,
+          author_name: name,
+          cards: cardInputs,
+        })
+        .then((r) => {
+          Router.push(`/cheatsheets/${r.data._id}`)
+          setName('')
+          setCheatSheetName('')
+          setCardInputs([''])
+        })
+        .catch((e) => {
+          toast.error(e.response.data.error)
+        }),
+    )
   }
 
   return (
@@ -137,7 +179,7 @@ const Create = () => {
         </Detail>
 
         <div className="grid gap-2 my-5">
-          {cardInputs.map((cardInput, index) => {
+          {cardInputs?.map((cardInput, index) => {
             return (
               <div key={index}>
                 <TextArea
