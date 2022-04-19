@@ -65,7 +65,7 @@ const Detail: FC<IDetailProps> = ({ className, children, ...rest }) => {
 const useCards = () => {
   const [cardInputs, setCardInputs] = useState<string[]>([''])
 
-  const [localCards, setLocalCards] = useLocalStorage<string[]>('cards', [])
+  const [localCards, setLocalCards] = useLocalStorage<string[]>('cards', [''])
 
   useEffect(() => {
     setLocalCards(cardInputs)
