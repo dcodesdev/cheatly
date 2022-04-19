@@ -1,6 +1,12 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import { DetailedHTMLProps, FC, HTMLAttributes, useState } from 'react'
+import {
+  DetailedHTMLProps,
+  FC,
+  HTMLAttributes,
+  useEffect,
+  useState,
+} from 'react'
 import { Button, Container } from '..'
 import Footer from '../../components/layout/Footer'
 import Navbar from '../../components/layout/Navbar'
@@ -8,6 +14,8 @@ import H1 from '../../components/typography/H1'
 import CheatSheet, { CheatsheetType } from '../../db/models/Cheatsheet'
 import { useCopyToClipboard } from 'react-use'
 import toast from 'react-hot-toast'
+import Head from 'next/head'
+import { useLoading } from '../../contexts/loadingContext'
 
 interface ICardProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -32,6 +40,7 @@ const Card: FC<ICardProps> = ({ className, text, cardNumber, ...rest }) => {
 
 const CheatsheetPage: FC<{ cheatsheet: CheatsheetType }> = ({ cheatsheet }) => {
   const router = useRouter()
+  const { setLoading } = useLoading()
 
   const [cardIndex, setCardIndex] = useState(0)
 
@@ -53,12 +62,20 @@ const CheatsheetPage: FC<{ cheatsheet: CheatsheetType }> = ({ cheatsheet }) => {
     toast.success('Copied to clipboard!')
   }
 
+  useEffect(() => {
+    setLoading(false)
+  }, []) // eslint-disable-line
+
   if (router.isFallback) {
     return <></>
   }
 
   return (
     <>
+      <Head>
+        <title>Cheater | {cheatsheet.name} </title>
+      </Head>
+
       <Container>
         <Navbar />
 

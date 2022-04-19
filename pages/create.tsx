@@ -16,7 +16,8 @@ import H1 from '../components/typography/H1'
 import axios from 'axios'
 import Router from 'next/router'
 import { useLocalStorage } from 'react-use'
-import { trackPromise } from 'react-promise-tracker'
+import { useLoading } from '../contexts/loadingContext'
+import Head from 'next/head'
 
 interface ILabelProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}
@@ -64,7 +65,6 @@ const Detail: FC<IDetailProps> = ({ className, children, ...rest }) => {
 
 const useCards = () => {
   const [cardInputs, setCardInputs] = useState<string[]>([''])
-
   const [localCards, setLocalCards] = useLocalStorage<string[]>('cards', [''])
 
   useEffect(() => {
@@ -84,6 +84,7 @@ const Create = () => {
     'cheatsheetName',
     '',
   )
+  const { setLoading } = useLoading()
 
   const { cardInputs, setCardInputs } = useCards()
 
@@ -121,27 +122,32 @@ const Create = () => {
       return
     }
 
-    trackPromise(
-      axios
-        .post('/api/cheatsheets', {
-          name: cheatSheetName,
-          author_name: name,
-          cards: cardInputs,
-        })
-        .then((r) => {
-          Router.push(`/cheatsheets/${r.data._id}`)
-          setName('')
-          setCheatSheetName('')
-          setCardInputs([''])
-        })
-        .catch((e) => {
-          toast.error(e.response.data.error)
-        }),
-    )
+    setLoading(true)
+
+    axios
+      .post('/api/cheatsheets', {
+        name: cheatSheetName,
+        author_name: name,
+        cards: cardInputs,
+      })
+      .then((r) => {
+        Router.push(`/cheatsheets/${r.data._id}`)
+        setName('')
+        setCheatSheetName('')
+        setCardInputs([''])
+      })
+      .catch((e) => {
+        toast.error(e.response.data.error)
+        setLoading(false)
+      })
   }
 
   return (
     <Container>
+      <Head>
+        <title>Cheater | Create a cheatsheet</title>
+      </Head>
+
       <Navbar />
       <H1 className="mt-10 text-5xl md:text-7xl leading-snug">
         Create your cheatsheet

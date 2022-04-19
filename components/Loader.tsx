@@ -1,7 +1,11 @@
-import React from 'react'
 import { TailSpin } from 'react-loader-spinner'
+import { useLoading } from '../contexts/loadingContext'
 
 const Loader = () => {
+  const { loading } = useLoading()
+
+  if (!loading) return <></>
+
   return (
     <div
       style={{ zIndex: 999 }}
