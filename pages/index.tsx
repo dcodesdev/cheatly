@@ -1,4 +1,4 @@
-import type { NextPage } from 'next'
+import type { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Router from 'next/router'
@@ -7,6 +7,7 @@ import Footer from '../components/layout/Footer'
 import H1 from '../components/typography/H1'
 import H2 from '../components/typography/H2'
 import H3 from '../components/typography/H3'
+import CheatSheet from '../db/models/Cheatsheet'
 
 export const Container: FC<{ children: any }> = ({ children }) => {
   return <div className="mx-auto max-w-7xl pt-5 px-5">{children}</div>
@@ -40,7 +41,7 @@ export const Button: FC<IButtonProps> = ({
   )
 }
 
-const Home: NextPage = () => {
+const Home: FC<{ count: number }> = ({ count }) => {
   const createCheatsheetHandler = () => {
     Router.push('/create')
   }
@@ -66,6 +67,11 @@ const Home: NextPage = () => {
           <H3 className="md:w-1/2 py-10 pt-5 text-center">
             Create a cheatsheet, and share it with your audience
           </H3>
+
+          <div className="font-bold text-primary-dark-1 text-center">
+            <span className="text-primary-pink-1">{count} cheatsheets </span>
+            are hosted on cheater.link
+          </div>
           <Button onClick={createCheatsheetHandler}>Create a cheatsheet</Button>
           <hr className="my-10 border bg-primary-dark-1 rounded-full h-2 opacity-90 w-full" />
 
@@ -88,6 +94,15 @@ const Home: NextPage = () => {
       </Container>
     </>
   )
+}
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  const count = await CheatSheet.countDocuments()
+
+  return {
+    props: { count },
+    revalidate: 100,
+  }
 }
 
 export default Home
