@@ -1,11 +1,12 @@
-import { NextApiHandler } from "next"
 import CheatSheet from "../../../db/models/Cheatsheet"
+import withUser from "../../../middlewares/withUser"
+import { ApiHandler } from "../../../types"
 
-const POST: NextApiHandler = async (req, res) => {
+const POST: ApiHandler = async (req, res) => {
   try {
     let { name, author_name, cards } = req.body
 
-    if (!name || !author_name || !cards) {
+    if (!name || !cards) {
       throw new Error("Missing required fields")
     }
 
@@ -16,6 +17,7 @@ const POST: NextApiHandler = async (req, res) => {
     cards = cards.map((card: string) => ({ content: card }))
 
     const cheatsheet = await CheatSheet.create({
+      user_id: req.user._id,
       name,
       author_name,
       cards,
@@ -31,7 +33,7 @@ const handlers = {
   POST,
 }
 
-const handler: NextApiHandler = async (req, res) => {
+const handler: ApiHandler = async (req, res) => {
   const { method } = req
   const handler = handlers[method as keyof typeof handlers]
 
@@ -42,4 +44,4 @@ const handler: NextApiHandler = async (req, res) => {
   }
 }
 
-export default handler
+export default withUser(handler)

@@ -15,7 +15,7 @@ import CheatSheet, { CheatsheetType } from '../../db/models/Cheatsheet'
 import { useCopyToClipboard } from 'react-use'
 import toast from 'react-hot-toast'
 import Head from 'next/head'
-import { useLoading } from '../../contexts/loadingContext'
+import { useLoading } from '../../lib/store'
 
 interface ICardProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {

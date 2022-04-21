@@ -1,3 +1,4 @@
+import axios from '../lib/client'
 import type { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -43,7 +44,14 @@ export const Button: FC<IButtonProps> = ({
 
 const Home: FC<{ count: number }> = ({ count }) => {
   const createCheatsheetHandler = () => {
-    Router.push('/create')
+    axios
+      .get('/api/auth/me')
+      .then((r) => {
+        Router.push('/create')
+      })
+      .catch((e) => {
+        Router.push('/api/auth/twitter/login')
+      })
   }
 
   return (

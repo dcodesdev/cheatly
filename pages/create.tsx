@@ -13,11 +13,12 @@ import TextArea from '../components/inputs/TextArea'
 import Footer from '../components/layout/Footer'
 import Navbar from '../components/layout/Navbar'
 import H1 from '../components/typography/H1'
-import axios from 'axios'
+import axios from '../lib/client'
 import Router from 'next/router'
 import { useLocalStorage } from 'react-use'
-import { useLoading } from '../contexts/loadingContext'
 import Head from 'next/head'
+import Protected from '../components/Protected'
+import { useLoading } from '../lib/store'
 
 interface ILabelProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}
@@ -143,86 +144,92 @@ const Create = () => {
   }
 
   return (
-    <Container>
-      <Head>
-        <title>Cheater | Create a cheatsheet</title>
-      </Head>
+    <Protected>
+      <Container>
+        <Head>
+          <title>Cheater | Create a cheatsheet</title>
+        </Head>
 
-      <Navbar />
-      <H1 className="mt-10 text-5xl md:text-7xl leading-snug">
-        Create your cheatsheet
-      </H1>
-      <form onSubmit={submitHandler}>
-        <h2 className="text-5xl font-bold text-primary-dark-1 mt-20">Author</h2>
+        <Navbar />
+        <H1 className="mt-10 text-5xl md:text-7xl leading-snug">
+          Create your cheatsheet
+        </H1>
+        <form onSubmit={submitHandler}>
+          <h2 className="text-5xl font-bold text-primary-dark-1 mt-20">
+            Author
+          </h2>
 
-        <Label className="mt-10">Name</Label>
-        <Input
-          onChange={(e) => {
-            setName(e.target.value)
-          }}
-          value={name}
-          placeholder="Enter your name"
-        />
-        <Detail className="m-1">
-          Your name will not appear on cheatsheets.
-        </Detail>
+          <Label className="mt-10">Name</Label>
+          <Input
+            onChange={(e) => {
+              setName(e.target.value)
+            }}
+            value={name}
+            placeholder="Enter your name"
+          />
+          <Detail className="m-1">
+            Your name will not appear on cheatsheets.
+          </Detail>
 
-        <h2 className="text-5xl font-bold text-primary-dark-1 mt-10">
-          The cheatsheet
-        </h2>
+          <h2 className="text-5xl font-bold text-primary-dark-1 mt-10">
+            The cheatsheet
+          </h2>
 
-        <Label className="mt-5">Cheatsheet name</Label>
-        <Input
-          onChange={(e) => {
-            setCheatSheetName(e.target.value)
-          }}
-          value={cheatSheetName}
-          placeholder="What do you want to name your cheatsheet?"
-        />
-        <Detail className="md:w-1/3 m-1">
-          You will have to create cards containing only 300 letters each. A
-          cheatsheet can have up to 100 cards.
-        </Detail>
+          <Label className="mt-5">Cheatsheet name</Label>
+          <Input
+            onChange={(e) => {
+              setCheatSheetName(e.target.value)
+            }}
+            value={cheatSheetName}
+            placeholder="What do you want to name your cheatsheet?"
+          />
+          <Detail className="md:w-1/3 m-1">
+            You will have to create cards containing only 300 letters each. A
+            cheatsheet can have up to 100 cards.
+          </Detail>
 
-        <div className="grid gap-2 my-5">
-          {cardInputs?.map((cardInput, index) => {
-            return (
-              <div key={index}>
-                <TextArea
-                  value={cardInput}
-                  onChange={(e) => handleCardInputChange(index, e.target.value)}
-                  placeholder="Your cheatsheet details..."
-                />
-                <p
-                  className={`text-xs ml-2 -mt-1 ${
-                    cardInput.length > 200
-                      ? 'text-red-500'
-                      : cardInput.length > 100
-                      ? 'text-yellow-500'
-                      : ''
-                  }`}
-                >
-                  {300 - cardInput.length}
-                </p>
-              </div>
-            )
-          })}
-          <div className="flex flex-col md:flex-row md:items-center gap-x-5">
-            <Button
-              type="button"
-              onClick={addNewCard}
-              className="w-max text-base py-3"
-            >
-              Next card
-            </Button>
-            <Button type="submit" className="w-max text-base py-3">
-              Publish Cheatsheet
-            </Button>
+          <div className="grid gap-2 my-5">
+            {cardInputs?.map((cardInput, index) => {
+              return (
+                <div key={index}>
+                  <TextArea
+                    value={cardInput}
+                    onChange={(e) =>
+                      handleCardInputChange(index, e.target.value)
+                    }
+                    placeholder="Your cheatsheet details..."
+                  />
+                  <p
+                    className={`text-xs ml-2 -mt-1 ${
+                      cardInput.length > 200
+                        ? 'text-red-500'
+                        : cardInput.length > 100
+                        ? 'text-yellow-500'
+                        : ''
+                    }`}
+                  >
+                    {300 - cardInput.length}
+                  </p>
+                </div>
+              )
+            })}
+            <div className="flex flex-col md:flex-row md:items-center gap-x-5">
+              <Button
+                type="button"
+                onClick={addNewCard}
+                className="w-max text-base py-3"
+              >
+                Next card
+              </Button>
+              <Button type="submit" className="w-max text-base py-3">
+                Publish Cheatsheet
+              </Button>
+            </div>
           </div>
-        </div>
-        <Footer />
-      </form>
-    </Container>
+          <Footer />
+        </form>
+      </Container>
+    </Protected>
   )
 }
 

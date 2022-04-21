@@ -1,5 +1,5 @@
 import { TailSpin } from 'react-loader-spinner'
-import { useLoading } from '../contexts/loadingContext'
+import { useLoading } from '../lib/store'
 
 const Loader = () => {
   const { loading } = useLoading()
