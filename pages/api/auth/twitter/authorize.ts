@@ -57,6 +57,7 @@ const GET: ApiHandler = async (req, res) => {
         twitter_access_token: result.accessToken,
         twitter_access_secret: result.accessSecret,
         profile_picture: userData.profile_image_url_https,
+        name: userData.name,
       },
       {
         upsert: true,
@@ -70,7 +71,7 @@ const GET: ApiHandler = async (req, res) => {
 
     res
       .setHeader("Set-Cookie", serialize("token", token, { path: "/" }))
-      .redirect(`${process.env.CLIENT_URL}/create`)
+      .redirect(`${process.env.CLIENT_URL}/dashboard`)
   } catch (error) {
     if (error instanceof Error)
       res.status(500).json({ message: "Internal server error." })

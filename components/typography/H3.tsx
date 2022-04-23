@@ -9,7 +9,7 @@ interface IH2Props
 const H3: FC<IH2Props> = ({ children, className, ...rest }) => {
   return (
     <h2
-      className={`font-medium text-primary-dark-1 text-4xl leading-snug ${className}`}
+      className={`text-primary-dark-1 text-5xl leading-snug ${className}`}
       {...rest}
     >
       {children}

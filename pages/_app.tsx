@@ -6,6 +6,7 @@ import { RecoilRoot } from 'recoil'
 import { FC, ReactNode, useEffect } from 'react'
 import { useLoading, useUser } from '../lib/store'
 import axios from '../lib/client'
+import Cookies from 'js-cookie'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -27,6 +28,12 @@ const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { loading, setLoading } = useLoading()
 
   useEffect(() => {
+    const token = Cookies.get('token')
+    if (!token) {
+      setLoading(false)
+      return
+    }
+
     if (user) return
 
     setLoading(true)

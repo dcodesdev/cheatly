@@ -9,6 +9,7 @@ export interface UserType extends Document, SchemaTimestampsConfig {
   twitter_access_secret?: string
   twitter_user_id: string
   profile_picture: string
+  name: string
   cheatsheets: CheatsheetType[]
 }
 
@@ -17,6 +18,9 @@ const UserSchema = new mongoose.Schema<UserType>(
     username: {
       type: String,
       required: true,
+    },
+    name: {
+      type: String,
     },
     email: {
       type: String,

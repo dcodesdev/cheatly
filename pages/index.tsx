@@ -9,6 +9,8 @@ import H1 from '../components/typography/H1'
 import H2 from '../components/typography/H2'
 import H3 from '../components/typography/H3'
 import CheatSheet from '../db/models/Cheatsheet'
+import Cookies from 'js-cookie'
+import { PopularCheatsheets } from './dashboard'
 
 export const Container: FC<{ children: any }> = ({ children }) => {
   return <div className="mx-auto max-w-7xl pt-5 px-5">{children}</div>
@@ -30,7 +32,7 @@ export const Button: FC<IButtonProps> = ({
 }) => {
   return (
     <button
-      className={`bg-primary-4 shadow-lg text-primary-dark-1 p-5 rounded-md font-bold text-2xl my-2 hover:opacity-80 duration-200 active:translate-y-1 ${
+      className={`bg-primary-4 shadow-lg text-primary-dark-1 p-4 rounded-md font-bold text-xl my-2 hover:opacity-80 duration-200 active:translate-y-1 ${
         variant === 1
           ? 'bg-primary-4'
           : 'bg-primary-2 border-2 border-primary-4'
@@ -47,9 +49,10 @@ const Home: FC<{ count: number }> = ({ count }) => {
     axios
       .get('/api/auth/me')
       .then((r) => {
-        Router.push('/create')
+        Router.push('/dashboard')
       })
       .catch((e) => {
+        Cookies.remove('token')
         Router.push('/api/auth/twitter/login')
       })
   }
@@ -98,6 +101,9 @@ const Home: FC<{ count: number }> = ({ count }) => {
             is to share your cheatsheets.
           </H3>
         </div>
+        <hr className="my-10" />
+        <PopularCheatsheets />
+
         <Footer />
       </Container>
     </>

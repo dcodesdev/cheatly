@@ -8,16 +8,18 @@ const userState = atom<UserType | null>({
 
 export const useUser = () => {
   const [user, setUser] = useRecoilState(userState)
+  const { loading } = useLoading()
 
   return {
     user,
     setUser,
+    loading,
   }
 }
 
 const loadingState = atom({
   key: "loading",
-  default: false,
+  default: true,
 })
 
 export const useLoading = () => {
