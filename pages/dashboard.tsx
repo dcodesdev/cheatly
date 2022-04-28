@@ -1,16 +1,49 @@
-import React from 'react'
 import { Button, Container } from '.'
 import Navbar from '../components/layout/Navbar'
-import { useUser } from '../lib/store'
 import { FaTrash, FaEdit, FaThumbsUp } from 'react-icons/fa'
 import { AiTwotoneLike } from 'react-icons/ai'
 import Link from 'next/link'
 import Image from 'next/image'
 import Footer from '../components/layout/Footer'
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router'
+import { useStore } from '../lib/store'
+import { FC, useEffect } from 'react'
+import client from '../lib/client'
+import { GetStaticProps } from 'next'
+import { CheatsheetType } from '../db/models/Cheatsheet'
 
 const Dashboard = () => {
-  const { user } = useUser()
+  const { user, setMyCheatsheets, myCheatsheets } = useStore((state) => ({
+    user: state.user,
+    setMyCheatsheets: state.setMyCheatsheets,
+    myCheatsheets: state.myCheatsheets,
+  }))
+
+  const getCheatsheets = () =>
+    client
+      .get('/api/cheatsheets/my')
+      .then((r) => {
+        setMyCheatsheets(r.data)
+      })
+      .catch((e) => {
+        console.log(e.message)
+      })
+
+  useEffect(() => {
+    getCheatsheets()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const deleteHandler = async (id: string) => {
+    if (!window.confirm('Sure?')) return
+    client
+      .delete(`/api/cheatsheets/${id}`)
+      .then(() => {
+        getCheatsheets()
+      })
+      .catch((e) => {
+        console.log(e.message)
+      })
+  }
 
   return (
     <Container>
@@ -48,15 +81,26 @@ const Dashboard = () => {
         Your cheatsheets
       </h4>
 
-      <div className="grid grid-cols-1 gap-2 text-2xl mt-10 ml-2 min-h-[20rem]">
-        {/* <Card /> */}
-        <p>
-          Currently you have not cheatsheets, why don&apos;t you{' '}
-          <Link href="/create">
-            <a className="text-primary-pink-1">create one?</a>
-          </Link>
-        </p>
-      </div>
+      {myCheatsheets.length > 0 ? (
+        <div className="grid gap-2">
+          {myCheatsheets.map((sheet) => (
+            <CheatsheetItem
+              deleteHandler={deleteHandler}
+              cheatsheet={sheet}
+              key={sheet.id}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-2 text-2xl mt-10 ml-2 min-h-[20rem]">
+          <p>
+            Currently you have not cheatsheets, why don&apos;t you{' '}
+            <Link href="/create">
+              <a className="text-primary-pink-1">create one?</a>
+            </Link>
+          </p>
+        </div>
+      )}
 
       <hr className="mt-10" />
 
@@ -65,6 +109,14 @@ const Dashboard = () => {
       <Footer />
     </Container>
   )
+}
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  return {
+    props: {
+      protected: true,
+    },
+  }
 }
 
 export const PopularCheatsheets = () => {
@@ -121,17 +173,33 @@ const SmallCard = () => {
   )
 }
 
-const Card = () => {
+const CheatsheetItem: FC<{
+  cheatsheet: CheatsheetType
+  deleteHandler: (id: string) => Promise<void>
+}> = ({ cheatsheet, deleteHandler }) => {
   return (
     <div className="bg-white p-7 py-10 pb-7 rounded-3xl">
       <div className="flex justify-between text-4xl items-start">
-        <h2 className="font-extrabold text-primary-dark-1">
-          Rest API cheatsheet
-        </h2>
+        <Link href={`/cheatsheets/${cheatsheet._id}`}>
+          <a>
+            <h2 className="font-extrabold text-primary-dark-1">
+              {cheatsheet.name}
+            </h2>
+          </a>
+        </Link>
 
         <div className="flex gap-2 text-gray-700">
-          <FaTrash className="bg-gray-200 hover:bg-gray-100 p-2 rounded-md cursor-pointer" />
-          <FaEdit className="bg-gray-200 hover:bg-gray-100 p-2 rounded-md cursor-pointer" />
+          <FaTrash
+            onClick={() => deleteHandler(cheatsheet._id)}
+            className="bg-gray-200 hover:bg-gray-100 p-2 rounded-md cursor-pointer"
+          />
+
+          <FaEdit
+            onClick={() => {
+              Router.push(`/cheatsheets/edit/${cheatsheet._id}`)
+            }}
+            className="bg-gray-200 hover:bg-gray-100 p-2 rounded-md cursor-pointer"
+          />
         </div>
       </div>
 
@@ -141,7 +209,10 @@ const Card = () => {
           <p>24</p>
         </div>
         <p className="text-primary-pink-1">2022 views</p>
-        <p className="text-primary-pink-1">12 Cards</p>
+        <p className="text-primary-pink-1">
+          {cheatsheet.cards.length} Card
+          {cheatsheet.cards.length === 1 ? ' ' : 's'}
+        </p>
       </div>
     </div>
   )

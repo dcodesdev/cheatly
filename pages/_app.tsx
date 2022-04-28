@@ -2,35 +2,37 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { Toaster } from 'react-hot-toast'
 import Loader from '../components/Loader'
-import { RecoilRoot } from 'recoil'
 import { FC, ReactNode, useEffect } from 'react'
 import { useLoading, useUser } from '../lib/store'
 import axios from '../lib/client'
 import Cookies from 'js-cookie'
+import Router from 'next/router'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <RecoilRoot>
-      <UserProvider>
-        <div className="bg-primary-3 min-h-screen">
-          <Loader />
-          <Component {...pageProps} />
-          <Toaster />
-        </div>
-      </UserProvider>
-    </RecoilRoot>
+    <UserProvider pageProps={pageProps}>
+      <div className="bg-primary-3 min-h-screen">
+        <Loader />
+        <Component {...pageProps} />
+        <Toaster />
+      </div>
+    </UserProvider>
   )
 }
 
 // initiates the user state
-const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
+const UserProvider: FC<{ children: ReactNode; pageProps: any }> = ({
+  children,
+  pageProps,
+}) => {
+  const { setLoading } = useLoading()
   const { user, setUser } = useUser()
-  const { loading, setLoading } = useLoading()
 
   useEffect(() => {
     const token = Cookies.get('token')
     if (!token) {
       setLoading(false)
+      Router.push('/')
       return
     }
 
@@ -43,14 +45,14 @@ const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
         setUser(r.data)
       })
       .catch((e) => {
-        console.log(e.message)
+        Router.push('/')
       })
       .finally(() => {
         setLoading(false)
       })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (loading) return <Loader />
+  if (pageProps.protected && !user) return <Loader />
 
   return <>{children}</>
 }

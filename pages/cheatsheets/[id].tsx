@@ -15,7 +15,7 @@ import CheatSheet, { CheatsheetType } from '../../db/models/Cheatsheet'
 import { useCopyToClipboard } from 'react-use'
 import toast from 'react-hot-toast'
 import Head from 'next/head'
-import { useLoading } from '../../lib/store'
+import { useStore } from '../../lib/store'
 
 interface ICardProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -40,7 +40,7 @@ const Card: FC<ICardProps> = ({ className, text, cardNumber, ...rest }) => {
 
 const CheatsheetPage: FC<{ cheatsheet: CheatsheetType }> = ({ cheatsheet }) => {
   const router = useRouter()
-  const { setLoading } = useLoading()
+  const setLoading = useStore((state) => state.setLoading)
 
   const [cardIndex, setCardIndex] = useState(0)
 

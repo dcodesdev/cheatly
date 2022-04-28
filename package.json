@@ -24,8 +24,8 @@
     "react-loader-spinner": "^6.0.0-0",
     "react-promise-tracker": "^2.1.0",
     "react-use": "^17.3.2",
-    "recoil": "^0.7.2",
-    "twitter-api-v2": "^1.12.0"
+    "twitter-api-v2": "^1.12.0",
+    "zustand": "^4.0.0-rc.0"
   },
   "devDependencies": {
     "@types/cookie": "^0.5.1",

@@ -18,6 +18,7 @@ const UserSchema = new mongoose.Schema<UserType>(
     username: {
       type: String,
       required: true,
+      unique: true,
     },
     name: {
       type: String,
@@ -27,6 +28,7 @@ const UserSchema = new mongoose.Schema<UserType>(
     },
     twitter_user_id: {
       type: String,
+      unique: true,
     },
     twitter_access_token: {
       type: String,
