@@ -1,4 +1,11 @@
-import mongoose, { Model, Document, SchemaTimestampsConfig } from "mongoose"
+import {
+  Model,
+  Document,
+  SchemaTimestampsConfig,
+  Schema,
+  models,
+  model,
+} from "mongoose"
 import { CheatsheetType } from "./Cheatsheet"
 import "../db"
 
@@ -13,7 +20,7 @@ export interface UserType extends Document, SchemaTimestampsConfig {
   cheatsheets: CheatsheetType[]
 }
 
-const UserSchema = new mongoose.Schema<UserType>(
+const UserSchema = new Schema<UserType>(
   {
     username: {
       type: String,
@@ -45,7 +52,6 @@ const UserSchema = new mongoose.Schema<UserType>(
   }
 )
 
-const User: Model<UserType> =
-  mongoose.models.User || mongoose.model("User", UserSchema)
+const User: Model<UserType> = models.User || model("User", UserSchema)
 
 export default User

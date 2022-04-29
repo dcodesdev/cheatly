@@ -9,8 +9,10 @@ interface IStore {
   loading: boolean
   setLoading: (loading: boolean) => void
 
-  myCheatsheets: CheatsheetType[]
-  setMyCheatsheets: (cheatsheets: CheatsheetType[]) => void
+  myCheatsheets: (CheatsheetType & { likes: number; views: number })[]
+  setMyCheatsheets: (
+    cheatsheets: (CheatsheetType & { likes: number; views: number })[]
+  ) => void
 }
 
 export const useStore = create<IStore>((set) => ({

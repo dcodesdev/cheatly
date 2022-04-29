@@ -1,8 +1,11 @@
-import mongoose, {
+import {
   Document,
   SchemaTimestampsConfig,
-  Model,
   Schema,
+  model,
+  models,
+  Model,
+  Types,
 } from "mongoose"
 import User, { UserType } from "./User"
 import "../db"
@@ -11,6 +14,7 @@ export interface CheatsheetType extends Document, SchemaTimestampsConfig {
   user_id: string | UserType
   name: string
   cards: Card[]
+  verified: boolean
 }
 
 interface Card extends Document {
@@ -34,8 +38,12 @@ const cheatsheetSchema = new Schema<CheatsheetType>(
       type: [cardSchema],
       maxlength: 100,
     },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
     user_id: {
-      type: mongoose.Types.ObjectId,
+      type: Types.ObjectId,
       ref: User,
     },
   },
@@ -45,6 +53,6 @@ const cheatsheetSchema = new Schema<CheatsheetType>(
 )
 
 const CheatSheet: Model<CheatsheetType> =
-  mongoose.models.CheatSheet || mongoose.model("CheatSheet", cheatsheetSchema)
+  models.CheatSheet || model("CheatSheet", cheatsheetSchema)
 
 export default CheatSheet

@@ -1,4 +1,6 @@
 import CheatSheet from "../../../db/models/Cheatsheet"
+import Like from "../../../db/models/Like"
+import View from "../../../db/models/View"
 import withUser from "../../../middlewares/withUser"
 import { ApiHandler } from "../../../types"
 
@@ -15,8 +17,21 @@ const handler: ApiHandler = async (req, res) => {
     const myCheatsheets = await CheatSheet.find({ user_id: req.user._id })
       .limit(pageSize)
       .skip((page - 1) * pageSize)
+      .lean()
 
-    res.json(myCheatsheets)
+    const promises = myCheatsheets.map(async (cheatsheet) => ({
+      ...cheatsheet,
+      views: await View.countDocuments({
+        cheatsheet_id: cheatsheet._id,
+      }),
+      likes: await Like.countDocuments({
+        cheatsheet_id: cheatsheet._id,
+      }),
+    }))
+
+    const data = await Promise.all(promises)
+
+    res.json(data)
   } catch (error) {
     if (error instanceof Error)
       res.status(400).json({

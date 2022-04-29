@@ -1,6 +1,7 @@
-import CheatSheet from "../../../db/models/Cheatsheet"
-import withUser from "../../../middlewares/withUser"
-import { ApiHandler } from "../../../types"
+import CheatSheet from "../../../../db/models/Cheatsheet"
+import View from "../../../../db/models/View"
+import withUser from "../../../../middlewares/withUser"
+import { ApiHandler } from "../../../../types"
 
 const PUT: ApiHandler = async (req, res) => {
   let { name, cards } = req.body
@@ -43,9 +44,15 @@ const GET: ApiHandler = async (req, res) => {
     const { id } = req.query
     if (!id) throw Error()
 
-    const cheatsheet = await CheatSheet.findOne({ _id: id })
+    const [cheatsheet, views] = await Promise.all([
+      CheatSheet.findOne({ _id: id }).lean(),
+      View.countDocuments({ cheatsheet_id: id }),
+    ])
 
-    res.json(cheatsheet)
+    res.json({
+      ...cheatsheet,
+      views,
+    })
   } catch (error) {
     res.json({
       message: "Something went wrong",

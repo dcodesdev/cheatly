@@ -10,7 +10,7 @@ import H2 from '../components/typography/H2'
 import H3 from '../components/typography/H3'
 import CheatSheet from '../db/models/Cheatsheet'
 import Cookies from 'js-cookie'
-import { PopularCheatsheets } from './dashboard'
+import PopularCheatsheets from '../components/layout/popularCheatsheets/PopularCheatsheets'
 
 export const Container: FC<{ children: any }> = ({ children }) => {
   return <div className="mx-auto max-w-7xl pt-5 px-5">{children}</div>
