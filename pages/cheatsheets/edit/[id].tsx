@@ -28,7 +28,7 @@ const Edit = () => {
     client.get(`/api/cheatsheets/${router.query.id}`).then((r) => {
       const userId = r.data.user_id
       if (userId !== user._id) {
-        Router.push('/')
+        Router.push('/dashboard')
         return
       }
       setCheatSheetName(r.data.name)
