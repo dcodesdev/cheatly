@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { useRouter } from 'next/router'
+import Router, { useRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
 import { Button, Container } from '..'
 import Footer from '../../components/layout/Footer'
@@ -44,13 +44,13 @@ const CheatsheetPage: FC<Props> = ({ cheatsheet }) => {
   const [isFaved, setIsFaved] = useState(false)
 
   const favoriteHandler = () => {
+    setIsFaved((p) => !p)
     client
       .get(`/api/cheatsheets/${cheatsheet._id}/favorite`)
-      .then((r) => {
-        setIsFaved((p) => !p)
-      })
+      .then((r) => {})
       .catch((e) => {
-        console.log(e.message)
+        setIsFaved((p) => !p)
+        router.push('/')
       })
   }
 
@@ -64,7 +64,7 @@ const CheatsheetPage: FC<Props> = ({ cheatsheet }) => {
         .catch((e) => {
           console.log(e.message)
         })
-  }, [user])
+  }, [user]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (user)
@@ -108,9 +108,11 @@ const CheatsheetPage: FC<Props> = ({ cheatsheet }) => {
   }
 
   const likeHandler = () => {
-    client.get(`/api/cheatsheets/${cheatsheet._id}/like`).catch(() => {})
-    setIsLiked(!isLiked)
+    setIsLiked((p) => !p)
     setLikes(isLiked ? likes - 1 : likes + 1)
+    client.get(`/api/cheatsheets/${cheatsheet._id}/like`).catch(() => {
+      Router.push('/')
+    })
   }
 
   useEffect(() => {

@@ -5,7 +5,6 @@ import Loader from '../components/Loader'
 import { FC, ReactNode, useEffect } from 'react'
 import { useLoading, useUser } from '../lib/store'
 import axios from '../lib/client'
-import Cookies from 'js-cookie'
 import Router from 'next/router'
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -25,17 +24,10 @@ const UserProvider: FC<{ children: ReactNode; pageProps: any }> = ({
   children,
   pageProps,
 }) => {
-  const { setLoading } = useLoading()
+  const { setLoading, loading } = useLoading()
   const { user, setUser } = useUser()
 
   useEffect(() => {
-    const token = Cookies.get('token')
-    if (!token) {
-      setLoading(false)
-      Router.push('/')
-      return
-    }
-
     if (user) return
 
     setLoading(true)
@@ -44,13 +36,17 @@ const UserProvider: FC<{ children: ReactNode; pageProps: any }> = ({
       .then((r) => {
         setUser(r.data)
       })
-      .catch((e) => {
-        Router.push('/')
-      })
+      .catch((e) => {})
       .finally(() => {
         setLoading(false)
       })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (pageProps.protected && !user && !loading) {
+      Router.push('/')
+    }
+  }, [user, loading]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (pageProps.protected && !user) return <Loader />
 
