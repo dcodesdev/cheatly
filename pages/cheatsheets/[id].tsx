@@ -22,6 +22,7 @@ import {
   AiOutlineStar,
 } from 'react-icons/ai'
 import Like from '../../db/models/Like'
+import Link from 'next/link'
 
 interface Props {
   cheatsheet: CheatsheetType & {
@@ -119,6 +120,8 @@ const CheatsheetPage: FC<Props> = ({ cheatsheet }) => {
     setLoading(false)
   }, []) // eslint-disable-line
 
+  const userIsAuthor = user && user._id === cheatsheet.user_id._id
+
   if (router.isFallback) {
     return <></>
   }
@@ -150,31 +153,43 @@ const CheatsheetPage: FC<Props> = ({ cheatsheet }) => {
           className="mt-10"
           cardNumber={`${cardIndex + 1}/${cheatsheet.cards.length}`}
         />
-        <div className="pl-1 pt-1 font-bold text-primary-dark-1 gap-2 select-none flex items-center text-xl">
-          <p>
-            {cheatsheet.views + (cheatsheet.views > 1 ? ' views' : ' view')}
-          </p>
-
-          {isLiked ? (
-            <AiFillLike
-              onClick={likeHandler}
-              className="text-primary-pink-1 cursor-pointer"
-            />
-          ) : (
-            <AiOutlineLike
-              onClick={likeHandler}
-              className="text-primary-pink-1 cursor-pointer"
-            />
-          )}
-          <p>{likes}</p>
-
-          {isFaved ? (
-            <AiFillStar onClick={favoriteHandler} className="cursor-pointer" />
-          ) : (
-            <AiOutlineStar
-              onClick={favoriteHandler}
-              className="cursor-pointer"
-            />
+        <div className="flex items-center justify-between max-w-4xl px-2 mt-2">
+          <div className="pl-1 pt-1 font-bold text-primary-dark-1 gap-2 select-none flex items-center text-xl">
+            <p>
+              {cheatsheet.views + (cheatsheet.views > 1 ? ' views' : ' view')}
+            </p>
+            {isLiked ? (
+              <AiFillLike
+                onClick={likeHandler}
+                className="text-primary-pink-1 cursor-pointer"
+              />
+            ) : (
+              <AiOutlineLike
+                onClick={likeHandler}
+                className="text-primary-pink-1 cursor-pointer"
+              />
+            )}
+            <p>{likes}</p>
+            {isFaved ? (
+              <AiFillStar
+                onClick={favoriteHandler}
+                className="cursor-pointer"
+              />
+            ) : (
+              <AiOutlineStar
+                onClick={favoriteHandler}
+                className="cursor-pointer"
+              />
+            )}
+          </div>
+          {userIsAuthor && (
+            <Link href={`/cheatsheets/edit/${cheatsheet._id}`}>
+              <a>
+                <p className="font-medium text-lg hover:bg-gray-200 duration-200 cursor-pointer px-5 py-2">
+                  Edit
+                </p>
+              </a>
+            </Link>
           )}
         </div>
 
