@@ -138,11 +138,11 @@ const CheatsheetPage: FC<Props> = ({ cheatsheet }) => {
             width={40}
             height={40}
             src={cheatsheet.user_id.profile_picture}
-            alt={cheatsheet.user_id.username}
+            alt={cheatsheet.user_id.name}
             className="rounded-full"
           />
           <span className="text-primary-pink-1">
-            {cheatsheet.user_id.username}
+            {cheatsheet.user_id.name.split(' ')[0]}
           </span>
         </div>
         <Card
@@ -198,7 +198,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     let [cheatsheet, views, likes] = await Promise.all([
       CheatSheet.findOne({ _id: id }).populate({
         path: 'user_id',
-        select: 'username profile_picture',
+        select: 'name profile_picture',
       }),
       View.countDocuments({ cheatsheet_id: id }),
       Like.countDocuments({ cheatsheet_id: id }),

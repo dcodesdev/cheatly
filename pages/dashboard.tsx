@@ -11,6 +11,7 @@ import { GetStaticProps } from 'next'
 import PopularCheatsheets from '../components/layout/popularCheatsheets/PopularCheatsheets'
 import CheatsheetItem from '../components/pages/dashboard/CheatsheetItem'
 import { AiTwotoneLike } from 'react-icons/ai'
+import { UserType } from '../db/models/User'
 
 const Dashboard = () => {
   const { user, setMyCheatsheets, myCheatsheets } = useStore((state) => ({
@@ -19,7 +20,9 @@ const Dashboard = () => {
     myCheatsheets: state.myCheatsheets,
   }))
 
-  const [favorites, setFavorites] = useState<CheatsheetWLikesAndViews[]>([])
+  const [favorites, setFavorites] = useState<
+    (CheatsheetWLikesAndViews & { user_id: { name: string } })[]
+  >([])
 
   const getFavoriteCheatsheets = () => {
     client
@@ -147,11 +150,11 @@ const Dashboard = () => {
 }
 
 const FavoriteCheatsheetItem: FC<{
-  cheatsheet: CheatsheetWLikesAndViews
+  cheatsheet: CheatsheetWLikesAndViews & { user_id: Partial<UserType> }
 }> = ({ cheatsheet }) => {
   return (
     <div className="bg-white p-7 py-10 pb-7 rounded-3xl">
-      <div className="flex justify-between text-4xl items-start">
+      <div className="flex text-4xl items-center gap-5">
         <Link href={`/cheatsheets/${cheatsheet._id}`}>
           <a>
             <h2 className="font-extrabold text-primary-dark-1">
@@ -159,6 +162,9 @@ const FavoriteCheatsheetItem: FC<{
             </h2>
           </a>
         </Link>
+        <p className="text-lg font-medium text-gray-500">
+          by {cheatsheet.user_id.name?.split(' ')[0]}
+        </p>
       </div>
 
       <div className="flex items-center mt-10 gap-5 font-bold text-xl">

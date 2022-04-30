@@ -1,6 +1,7 @@
 import CheatSheet from "../../../db/models/Cheatsheet"
 import Favorite from "../../../db/models/Favourite"
 import Like from "../../../db/models/Like"
+import User from "../../../db/models/User"
 import View from "../../../db/models/View"
 import withUser from "../../../middlewares/withUser"
 import { ApiHandler } from "../../../types"
@@ -23,6 +24,7 @@ const handler: ApiHandler = async (req, res) => {
         $in: favs.map((fav) => fav.cheatsheet_id),
       },
     })
+      .populate({ path: "user_id", select: "name" })
       .limit(10)
       .lean()
 
