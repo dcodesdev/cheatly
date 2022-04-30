@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Footer from '../components/layout/Footer'
 import Router from 'next/router'
-import { CheatsheetWLikesAndViews, useStore } from '../lib/store'
+import { CheatsheetWLikesAndViews, useStore, useUser } from '../lib/store'
 import { FC, useEffect, useState } from 'react'
 import client from '../lib/client'
 import { GetStaticProps } from 'next'
@@ -12,6 +12,7 @@ import PopularCheatsheets from '../components/layout/popularCheatsheets/PopularC
 import CheatsheetItem from '../components/pages/dashboard/CheatsheetItem'
 import { AiTwotoneLike } from 'react-icons/ai'
 import { UserType } from '../db/models/User'
+import Cookies from 'js-cookie'
 
 const Dashboard = () => {
   const { user, setMyCheatsheets, myCheatsheets } = useStore((state) => ({
@@ -65,27 +66,42 @@ const Dashboard = () => {
       })
   }
 
+  const { setUser } = useUser()
+  const signOutHandler = () => {
+    Cookies.remove('token')
+    setUser(null)
+
+    Router.push('/')
+  }
+
   return (
     <Container>
       <Navbar />
 
-      <div className="flex items-center mt-10 gap-2">
-        <h3 className="font-bold text-2xl">
-          Welcome back{' '}
-          <span className="text-primary-pink-1">
-            {user?.name?.split(' ')[0]}
-          </span>
-        </h3>
-
-        <div className="self-center">
-          <Image
-            className="object-cover rounded-full"
-            width={40}
-            height={40}
-            src={user?.profile_picture as string}
-            alt={user?.name}
-          />
+      <div className="flex items-center mt-10 gap-2 justify-between">
+        <div className="flex gap-2 items-center">
+          <h3 className="font-bold text-2xl">
+            Welcome back{' '}
+            <span className="text-primary-pink-1">
+              {user?.name?.split(' ')[0]}
+            </span>
+          </h3>
+          <div className="self-center">
+            <Image
+              className="object-cover rounded-full"
+              width={40}
+              height={40}
+              src={user?.profile_picture as string}
+              alt={user?.name}
+            />
+          </div>
         </div>
+        <button
+          onClick={signOutHandler}
+          className="hover:bg-gray-200 cursor-pointer px-5 py-2"
+        >
+          Sign Out
+        </button>
       </div>
       <Button
         onClick={() => {
@@ -98,7 +114,7 @@ const Dashboard = () => {
       <hr className="mt-10" />
 
       <h4 className="font-bold text-3xl mt-10 mb-5 text-primary-dark-1">
-        Your cheatsheets
+        My cheatsheets
       </h4>
 
       {myCheatsheets.length > 0 ? (
@@ -125,7 +141,7 @@ const Dashboard = () => {
       <hr className="mt-10" />
 
       <h4 className="font-bold text-3xl mt-10 mb-5 text-primary-dark-1">
-        Your favorites
+        My favorites
       </h4>
 
       {favorites.length > 0 ? (

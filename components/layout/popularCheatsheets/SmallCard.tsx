@@ -26,10 +26,10 @@ const SmallCard: FC<ISmallCardProps> = ({ cheatsheet }) => {
           width={40}
           height={40}
           src={cheatsheet.author.profile_picture as string}
-          alt={cheatsheet.author.username}
+          alt={cheatsheet.author.name}
         />
         <p className="font-bold text-lg text-primary-dark-1">
-          By {cheatsheet.author.username}
+          By {cheatsheet.author.name?.split(' ')[0]}
         </p>
       </div>
 

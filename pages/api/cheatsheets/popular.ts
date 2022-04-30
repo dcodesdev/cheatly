@@ -11,13 +11,13 @@ const handler: ApiHandler = async (req, res) => {
       .sort({ createdAt: "desc" })
       .lean()
 
-    const promises = popularCheatsheets.map(async (ch) => ({
-      ...ch,
-      author: await User.findOne({ _id: ch.user_id }).select(
-        "username profile_picture"
+    const promises = popularCheatsheets.map(async (cheatsheet) => ({
+      ...cheatsheet,
+      author: await User.findOne({ _id: cheatsheet.user_id }).select(
+        "name profile_picture"
       ),
-      likes: await Like.countDocuments({ cheatsheet_id: ch._id }),
-      views: await View.countDocuments({ cheatsheet_id: ch._id }),
+      likes: await Like.countDocuments({ cheatsheet_id: cheatsheet._id }),
+      views: await View.countDocuments({ cheatsheet_id: cheatsheet._id }),
     }))
 
     const data = await Promise.all(promises)

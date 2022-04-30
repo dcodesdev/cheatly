@@ -21,12 +21,8 @@ const handler: ApiHandler = async (req, res) => {
 
     const promises = myCheatsheets.map(async (cheatsheet) => ({
       ...cheatsheet,
-      views: await View.countDocuments({
-        cheatsheet_id: cheatsheet._id,
-      }),
-      likes: await Like.countDocuments({
-        cheatsheet_id: cheatsheet._id,
-      }),
+      views: await View.countDocuments({ cheatsheet_id: cheatsheet._id }),
+      likes: await Like.countDocuments({ cheatsheet_id: cheatsheet._id }),
     }))
 
     const data = await Promise.all(promises)

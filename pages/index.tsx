@@ -1,4 +1,4 @@
-import axios from '../lib/client'
+import client from '../lib/client'
 import type { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -11,6 +11,7 @@ import H3 from '../components/typography/H3'
 import CheatSheet from '../db/models/Cheatsheet'
 import Cookies from 'js-cookie'
 import PopularCheatsheets from '../components/layout/popularCheatsheets/PopularCheatsheets'
+import { useUser } from '../lib/store'
 
 export const Container: FC<{ children: any }> = ({ children }) => {
   return <div className="mx-auto max-w-7xl pt-5 px-5">{children}</div>
@@ -45,16 +46,12 @@ export const Button: FC<IButtonProps> = ({
 }
 
 const Home: FC<{ count: number }> = ({ count }) => {
+  const { user } = useUser()
+
   const createCheatsheetHandler = () => {
-    axios
-      .get('/api/auth/me')
-      .then((r) => {
-        Router.push('/dashboard')
-      })
-      .catch((e) => {
-        Cookies.remove('token')
-        Router.push('/api/auth/twitter/login')
-      })
+    if (user) return Router.push('/dashboard')
+
+    Router.push('/api/auth/twitter/login')
   }
 
   return (

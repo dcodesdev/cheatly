@@ -13,7 +13,7 @@ import TextArea from '../components/inputs/TextArea'
 import Footer from '../components/layout/Footer'
 import Navbar from '../components/layout/Navbar'
 import H1 from '../components/typography/H1'
-import axios from '../lib/client'
+import client from '../lib/client'
 import Router from 'next/router'
 import { useLocalStorage } from 'react-use'
 import Head from 'next/head'
@@ -103,7 +103,7 @@ const Create = () => {
   }
 
   const addNewCard = () => {
-    const newCards = cardInputs?.filter((i) => i) || []
+    const newCards = cardInputs?.filter((i) => i) || [] // removes empty strings
 
     setCardInputs([...newCards, ''])
   }
@@ -122,14 +122,14 @@ const Create = () => {
 
     setLoading(true)
 
-    axios
+    client
       .post('/api/cheatsheets', {
         name: cheatSheetName,
         cards: cardInputs,
       })
       .then((r) => {
         Router.push(`/cheatsheets/${r.data._id}`)
-
+ 
         setCheatSheetName('')
         setCardInputs([''])
       })
