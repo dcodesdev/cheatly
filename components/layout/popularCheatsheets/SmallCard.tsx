@@ -1,36 +1,50 @@
 import Image from 'next/image'
+import Link from 'next/link'
+import { FC } from 'react'
 import { FaThumbsUp } from 'react-icons/fa'
+import { UserType } from '../../../db/models/User'
+import { CheatsheetWLikesAndViews } from '../../../lib/store'
 
-const SmallCard = () => {
+interface ISmallCardProps {
+  cheatsheet: CheatsheetWLikesAndViews & { author: Partial<UserType> }
+}
+
+const SmallCard: FC<ISmallCardProps> = ({ cheatsheet }) => {
   return (
     <div className="bg-white p-7 rounded-3xl max-w-xl mx-auto w-full">
-      <p className="text-2xl font-bold text-primary-dark-1">
-        REST API cheatsheet
-      </p>
+      <Link href={`/cheatsheets/${cheatsheet._id}`}>
+        <a>
+          <p className="text-2xl font-bold text-primary-dark-1">
+            {cheatsheet.name}
+          </p>
+        </a>
+      </Link>
 
       <div className="flex items-center gap-2 mt-5 mb-2">
         <Image
           className="object-cover rounded-full"
           width={40}
           height={40}
-          src="https://i.ibb.co/yFk24Gr/image-2.png"
-          alt="avatar"
+          src={cheatsheet.author.profile_picture as string}
+          alt={cheatsheet.author.username}
         />
-        <p className="font-bold text-lg text-primary-dark-1">By Jon Doe</p>
+        <p className="font-bold text-lg text-primary-dark-1">
+          By {cheatsheet.author.username}
+        </p>
       </div>
 
       <div className="flex items-center text-primary-4 gap-5 mt-5">
         <div className="flex gap-2 items-center">
           <FaThumbsUp />
-          <p>32</p>
+          <p>{cheatsheet.likes}</p>
         </div>
 
         <div className="flex items-center text-primary-pink-1 font-bold">
-          232 Views
+          {cheatsheet.views} Views
         </div>
 
         <div className="flex items-center text-primary-pink-1 font-bold">
-          23 Cards
+          {cheatsheet.cards.length} Cards
         </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ import {
 } from "mongoose"
 import CheatSheet, { CheatsheetType } from "./Cheatsheet"
 import User, { UserType } from "./User"
+import '../db'
 
 interface LikeType extends Document, SchemaTimestampsConfig {
   user_id: string | UserType

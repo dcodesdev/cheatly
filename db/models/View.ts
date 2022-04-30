@@ -8,6 +8,7 @@ import {
   Types,
 } from "mongoose"
 import CheatSheet from "./Cheatsheet"
+import "../db"
 
 interface ViewType extends Document, SchemaTimestampsConfig {
   ip: string

@@ -2,6 +2,11 @@ import { UserType } from "../db/models/User"
 import create from "zustand"
 import { CheatsheetType } from "../db/models/Cheatsheet"
 
+export interface CheatsheetWLikesAndViews extends CheatsheetType {
+  likes: number
+  views: number
+}
+
 interface IStore {
   user: UserType | null
   setUser: (user: UserType | null) => void
@@ -9,9 +14,14 @@ interface IStore {
   loading: boolean
   setLoading: (loading: boolean) => void
 
-  myCheatsheets: (CheatsheetType & { likes: number; views: number })[]
-  setMyCheatsheets: (
-    cheatsheets: (CheatsheetType & { likes: number; views: number })[]
+  myCheatsheets: CheatsheetWLikesAndViews[]
+  setMyCheatsheets: (cheatsheets: CheatsheetWLikesAndViews[]) => void
+
+  popularCheatsheets: (CheatsheetWLikesAndViews & {
+    author: Partial<UserType>
+  })[]
+  setPopularCheatsheets: (
+    popular: (CheatsheetWLikesAndViews & { author: Partial<UserType> })[]
   ) => void
 }
 
@@ -24,6 +34,9 @@ export const useStore = create<IStore>((set) => ({
 
   myCheatsheets: [],
   setMyCheatsheets: (cheatsheets) => set({ myCheatsheets: cheatsheets }),
+
+  popularCheatsheets: [],
+  setPopularCheatsheets: (popular) => set({ popularCheatsheets: popular }),
 }))
 
 export const useUser = () => {
@@ -59,5 +72,17 @@ export const useMyCheatsheets = () => {
   return {
     myCheatsheets,
     setMyCheatsheets,
+  }
+}
+
+export const usePopularCheatsheets = () => {
+  const { popularCheatsheets, setPopularCheatsheets } = useStore((state) => ({
+    popularCheatsheets: state.popularCheatsheets,
+    setPopularCheatsheets: state.setPopularCheatsheets,
+  }))
+
+  return {
+    popularCheatsheets,
+    setPopularCheatsheets,
   }
 }

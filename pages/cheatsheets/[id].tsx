@@ -15,7 +15,12 @@ import client from '../../lib/client'
 import View from '../../db/models/View'
 import { UserType } from '../../db/models/User'
 import Image from 'next/image'
-import { AiFillLike, AiOutlineLike } from 'react-icons/ai'
+import {
+  AiFillLike,
+  AiFillStar,
+  AiOutlineLike,
+  AiOutlineStar,
+} from 'react-icons/ai'
 import Like from '../../db/models/Like'
 
 interface Props {
@@ -35,6 +40,31 @@ const CheatsheetPage: FC<Props> = ({ cheatsheet }) => {
 
   const [isLiked, setIsLiked] = useState(false)
   const [likes, setLikes] = useState(0)
+
+  const [isFaved, setIsFaved] = useState(false)
+
+  const favoriteHandler = () => {
+    client
+      .get(`/api/cheatsheets/${cheatsheet._id}/favorite`)
+      .then((r) => {
+        setIsFaved((p) => !p)
+      })
+      .catch((e) => {
+        console.log(e.message)
+      })
+  }
+
+  useEffect(() => {
+    if (user)
+      client
+        .get(`/api/cheatsheets/${cheatsheet._id}/isFaved`)
+        .then((r) => {
+          setIsFaved(r.data)
+        })
+        .catch((e) => {
+          console.log(e.message)
+        })
+  }, [user])
 
   useEffect(() => {
     if (user)
@@ -118,7 +148,7 @@ const CheatsheetPage: FC<Props> = ({ cheatsheet }) => {
           className="mt-10"
           cardNumber={`${cardIndex + 1}/${cheatsheet.cards.length}`}
         />
-        <div className="pl-1 pt-1 font-bold text-primary-dark-1 flex gap-2 items-center select-none">
+        <div className="pl-1 pt-1 font-bold text-primary-dark-1 gap-2 select-none flex items-center text-xl">
           <p>
             {cheatsheet.views + (cheatsheet.views > 1 ? ' views' : ' view')}
           </p>
@@ -127,16 +157,23 @@ const CheatsheetPage: FC<Props> = ({ cheatsheet }) => {
             <AiFillLike
               onClick={likeHandler}
               className="text-primary-pink-1 cursor-pointer"
-              size={30}
             />
           ) : (
             <AiOutlineLike
               onClick={likeHandler}
               className="text-primary-pink-1 cursor-pointer"
-              size={30}
             />
           )}
           <p>{likes}</p>
+
+          {isFaved ? (
+            <AiFillStar onClick={favoriteHandler} className="cursor-pointer" />
+          ) : (
+            <AiOutlineStar
+              onClick={favoriteHandler}
+              className="cursor-pointer"
+            />
+          )}
         </div>
 
         <div className="mt-10 flex items-center gap-5">

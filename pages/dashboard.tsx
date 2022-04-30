@@ -4,12 +4,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Footer from '../components/layout/Footer'
 import Router from 'next/router'
-import { useStore } from '../lib/store'
-import { useEffect } from 'react'
+import { CheatsheetWLikesAndViews, useStore } from '../lib/store'
+import { FC, useEffect, useState } from 'react'
 import client from '../lib/client'
 import { GetStaticProps } from 'next'
 import PopularCheatsheets from '../components/layout/popularCheatsheets/PopularCheatsheets'
 import CheatsheetItem from '../components/pages/dashboard/CheatsheetItem'
+import { AiTwotoneLike } from 'react-icons/ai'
 
 const Dashboard = () => {
   const { user, setMyCheatsheets, myCheatsheets } = useStore((state) => ({
@@ -17,6 +18,23 @@ const Dashboard = () => {
     setMyCheatsheets: state.setMyCheatsheets,
     myCheatsheets: state.myCheatsheets,
   }))
+
+  const [favorites, setFavorites] = useState<CheatsheetWLikesAndViews[]>([])
+
+  const getFavoriteCheatsheets = () => {
+    client
+      .get(`/api/cheatsheets/favorites`)
+      .then((r) => {
+        setFavorites(r.data)
+      })
+      .catch((e) => {
+        console.log(e.message)
+      })
+  }
+
+  useEffect(() => {
+    getFavoriteCheatsheets()
+  }, [])
 
   const getCheatsheets = () =>
     client
@@ -86,7 +104,7 @@ const Dashboard = () => {
             <CheatsheetItem
               deleteHandler={deleteHandler}
               cheatsheet={sheet}
-              key={sheet.id}
+              key={sheet._id}
             />
           ))}
         </div>
@@ -103,10 +121,58 @@ const Dashboard = () => {
 
       <hr className="mt-10" />
 
+      <h4 className="font-bold text-3xl mt-10 mb-5 text-primary-dark-1">
+        Your favorites
+      </h4>
+
+      {favorites.length > 0 ? (
+        <div className="grid gap-2">
+          {favorites.map((sheet) => (
+            <FavoriteCheatsheetItem cheatsheet={sheet} key={sheet._id} />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-2 text-2xl mt-10 ml-2 min-h-[20rem]">
+          <p>Currently you don&apos;t have any favorites.</p>
+        </div>
+      )}
+
+      <hr className="mt-10" />
+
       <PopularCheatsheets />
 
       <Footer />
     </Container>
+  )
+}
+
+const FavoriteCheatsheetItem: FC<{
+  cheatsheet: CheatsheetWLikesAndViews
+}> = ({ cheatsheet }) => {
+  return (
+    <div className="bg-white p-7 py-10 pb-7 rounded-3xl">
+      <div className="flex justify-between text-4xl items-start">
+        <Link href={`/cheatsheets/${cheatsheet._id}`}>
+          <a>
+            <h2 className="font-extrabold text-primary-dark-1">
+              {cheatsheet.name}
+            </h2>
+          </a>
+        </Link>
+      </div>
+
+      <div className="flex items-center mt-10 gap-5 font-bold text-xl">
+        <div className="flex items-center gap-1 text-primary-4">
+          <AiTwotoneLike />
+          <p>{cheatsheet.likes}</p>
+        </div>
+        <p className="text-primary-pink-1">{cheatsheet.views} views</p>
+        <p className="text-primary-pink-1">
+          {cheatsheet.cards.length} Card
+          {cheatsheet.cards.length === 1 ? ' ' : 's'}
+        </p>
+      </div>
+    </div>
   )
 }
 
