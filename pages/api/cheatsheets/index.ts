@@ -1,6 +1,6 @@
-import CheatSheet from "../../../db/models/Cheatsheet"
-import withUser from "../../../middlewares/withUser"
-import { ApiHandler } from "../../../types"
+import CheatSheet from "@db/models/Cheatsheet"
+import { withUser } from "@middlewares"
+import { ApiHandler } from "@types"
 
 const POST: ApiHandler = async (req, res) => {
   try {

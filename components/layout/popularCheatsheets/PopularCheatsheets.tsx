@@ -1,9 +1,8 @@
 import { useEffect } from 'react'
-import client from '../../../lib/client'
-import { usePopularCheatsheets } from '../../../lib/store'
-import SmallCard from './SmallCard'
+import { client, usePopularCheatsheets } from '@lib'
+import { SmallCard } from '.'
 
-const PopularCheatsheets = () => {
+export const PopularCheatsheets = () => {
   const { setPopularCheatsheets, popularCheatsheets } = usePopularCheatsheets()
 
   const getPopularCheatsheets = () => {
@@ -37,5 +36,3 @@ const PopularCheatsheets = () => {
     <></>
   )
 }
-
-export default PopularCheatsheets

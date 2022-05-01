@@ -1,3 +1,6 @@
+import "../db"
+import { UserType } from "@db"
+import User from "@db/models/User"
 import {
   Document,
   SchemaTimestampsConfig,
@@ -7,8 +10,6 @@ import {
   Model,
   Types,
 } from "mongoose"
-import User, { UserType } from "./User"
-import "../db"
 
 export interface CheatsheetType extends Document, SchemaTimestampsConfig {
   user_id: string | UserType

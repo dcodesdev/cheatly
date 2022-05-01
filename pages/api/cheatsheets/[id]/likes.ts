@@ -1,5 +1,5 @@
-import Like from "../../../../db/models/Like"
-import { ApiHandler } from "../../../../types"
+import { ApiHandler } from "@types"
+import Like from "@db/models/Like"
 
 const handler: ApiHandler = async (req, res) => {
   if (req.method !== "GET") {

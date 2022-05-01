@@ -1,17 +1,21 @@
 import { FormEventHandler, useEffect, useState } from 'react'
-import { Button, Container } from '../..'
-import Input from '../../../components/inputs/Input'
-import Navbar from '../../../components/layout/Navbar'
-import Loader from '../../../components/Loader'
-import H1 from '../../../components/typography/H1'
-import { useLoading, useUser } from '../../../lib/store'
-import { Detail, Label } from '../../create'
 import Head from 'next/head'
-import TextArea from '../../../components/inputs/TextArea'
-import Footer from '../../../components/layout/Footer'
 import toast from 'react-hot-toast'
-import client from '../../../lib/client'
 import Router, { useRouter } from 'next/router'
+
+import { useLoading, useUser, client } from '@lib'
+import {
+  Container,
+  Footer,
+  H1,
+  Loader,
+  Navbar,
+  PrimaryButton,
+  PrimaryInput,
+  TextArea,
+  Detail,
+  Label,
+} from '@components'
 
 const Edit = () => {
   const { user } = useUser()
@@ -101,7 +105,7 @@ const Edit = () => {
       </H1>
       <form onSubmit={submitHandler}>
         <Label className="mt-20">Cheatsheet name</Label>
-        <Input
+        <PrimaryInput
           onChange={(e) => {
             setCheatSheetName(e.target.value)
           }}
@@ -137,16 +141,16 @@ const Edit = () => {
             )
           })}
           <div className="flex flex-col md:flex-row md:items-center gap-x-5">
-            <Button
+            <PrimaryButton
               type="button"
               onClick={addNewCard}
               className="w-max text-base py-3"
             >
               Next card
-            </Button>
-            <Button type="submit" className="w-max text-base py-3">
+            </PrimaryButton>
+            <PrimaryButton type="submit" className="w-max text-base py-3">
               Update Cheatsheet
-            </Button>
+            </PrimaryButton>
           </div>
         </div>
         <Footer />

@@ -1,7 +1,8 @@
 import moment from "moment"
-import { ApiHandler } from "../../../../types"
 import requestIp from "request-ip"
-import View from "../../../../db/models/View"
+
+import { ApiHandler } from "@types"
+import View from "@db/models/View"
 
 const handler: ApiHandler = async (req, res) => {
   try {

@@ -1,7 +1,7 @@
 import { TailSpin } from 'react-loader-spinner'
 import { useStore } from '../lib/store'
 
-const Loader = () => {
+export const Loader = () => {
   const loading = useStore((state) => state.loading)
 
   if (!loading) return <></>
@@ -17,5 +17,3 @@ const Loader = () => {
     </div>
   )
 }
-
-export default Loader

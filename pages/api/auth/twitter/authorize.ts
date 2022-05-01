@@ -1,8 +1,9 @@
 import TwitterApi from "twitter-api-v2"
-import User from "../../../../db/models/User"
-import genToken from "../../../../lib/genToken"
-import { ApiHandler } from "../../../../types"
 import { serialize } from "cookie"
+
+import User from "@db/models/User"
+import { genToken } from "@lib"
+import { ApiHandler } from "@types"
 
 const handler: ApiHandler = async (req, res) => {
   if (req.method !== "GET") {

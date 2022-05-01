@@ -3,24 +3,24 @@ import Router from 'next/router'
 import { FC } from 'react'
 import { AiTwotoneLike } from 'react-icons/ai'
 import { FaEdit, FaTrash } from 'react-icons/fa'
-import { CheatsheetType } from '../../../db/models/Cheatsheet'
+import { ICheatsheetItemProps } from '.'
 
-const CheatsheetItem: FC<{
-  cheatsheet: CheatsheetType & { likes: number; views: number }
-  deleteHandler: (id: string) => Promise<void>
-}> = ({ cheatsheet, deleteHandler }) => {
+export const CheatsheetItem: FC<ICheatsheetItemProps> = ({
+  cheatsheet,
+  deleteHandler,
+}) => {
   return (
     <div className="bg-white p-7 py-10 pb-7 rounded-3xl">
-      <div className="flex justify-between text-4xl items-start">
+      <div className="flex justify-between items-start">
         <Link href={`/cheatsheets/${cheatsheet._id}`}>
           <a>
-            <h2 className="font-extrabold text-primary-dark-1">
+            <h2 className="font-extrabold text-2xl text-primary-dark-1">
               {cheatsheet.name}
             </h2>
           </a>
         </Link>
 
-        <div className="flex gap-2 text-gray-700">
+        <div className="flex gap-2 text-gray-700 text-3xl">
           <FaTrash
             onClick={() => deleteHandler(cheatsheet._id)}
             className="bg-gray-200 hover:bg-gray-100 p-2 rounded-md cursor-pointer"
@@ -49,5 +49,3 @@ const CheatsheetItem: FC<{
     </div>
   )
 }
-
-export default CheatsheetItem

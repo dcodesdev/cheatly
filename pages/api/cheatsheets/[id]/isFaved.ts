@@ -1,6 +1,6 @@
-import Favorite from "../../../../db/models/Favourite"
-import withUser from "../../../../middlewares/withUser"
-import { ApiHandler } from "../../../../types"
+import Favorite from "@db/models/Favourite"
+import { withUser } from "@middlewares"
+import { ApiHandler } from "@types"
 
 // to check if the cheat sheet is favourited by the user
 const handler: ApiHandler = async (req, res) => {

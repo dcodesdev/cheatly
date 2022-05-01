@@ -1,7 +1,8 @@
 import moment from "moment"
-import User from "../../../db/models/User"
-import withUser from "../../../middlewares/withUser"
-import { ApiHandler, Request } from "../../../types"
+
+import User from "@db/models/User"
+import { withUser } from "@middlewares"
+import { ApiHandler, Request } from "@types"
 
 const handler: ApiHandler = async (req, res) => {
   if (req.method !== "GET") {

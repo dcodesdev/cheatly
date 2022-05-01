@@ -7,9 +7,10 @@ import {
   Types,
   SchemaTimestampsConfig,
 } from "mongoose"
-import CheatSheet, { CheatsheetType } from "./Cheatsheet"
-import User, { UserType } from "./User"
-import '../db'
+import { UserType, CheatsheetType } from "@db"
+import User from "@db/models/User"
+import CheatSheet from "@db/models/Cheatsheet"
+import "../db"
 
 interface LikeType extends Document, SchemaTimestampsConfig {
   user_id: string | UserType

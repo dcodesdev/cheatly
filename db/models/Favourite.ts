@@ -7,9 +7,9 @@ import {
   SchemaTimestampsConfig,
   Types,
 } from "mongoose"
-import CheatSheet from "./Cheatsheet"
+import CheatSheet from "@db/models/Cheatsheet"
+import User from "@db/models/User"
 import "../db"
-import User from "./User"
 
 interface FavoriteType extends Document, SchemaTimestampsConfig {
   cheatsheet_id: string

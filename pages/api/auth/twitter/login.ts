@@ -1,5 +1,6 @@
 import { NextApiHandler } from "next"
-import Twitter from "../../../../lib/twitter"
+
+import Twitter from "@lib/twitter"
 
 const GET: NextApiHandler = async (req, res) => {
   try {

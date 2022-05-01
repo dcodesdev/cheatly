@@ -1,12 +1,14 @@
-import CheatSheet from "../../../db/models/Cheatsheet"
-import Like from "../../../db/models/Like"
-import User from "../../../db/models/User"
-import View from "../../../db/models/View"
-import { ApiHandler } from "../../../types"
+import { ApiHandler } from "@types"
+import CheatSheet from "@db/models/Cheatsheet"
+import Like from "@db/models/Like"
+import User from "@db/models/User"
+import View from "@db/models/View"
 
 const handler: ApiHandler = async (req, res) => {
   try {
-    const popularCheatsheets = await CheatSheet.find({})
+    const popularCheatsheets = await CheatSheet.find({
+      verified: true,
+    })
       .limit(10)
       .sort({ createdAt: "desc" })
       .lean()
@@ -14,7 +16,7 @@ const handler: ApiHandler = async (req, res) => {
     const promises = popularCheatsheets.map(async (cheatsheet) => ({
       ...cheatsheet,
       author: await User.findOne({ _id: cheatsheet.user_id }).select(
-        "name profile_picture"
+        "name username profile_picture"
       ),
       likes: await Like.countDocuments({ cheatsheet_id: cheatsheet._id }),
       views: await View.countDocuments({ cheatsheet_id: cheatsheet._id }),

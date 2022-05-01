@@ -1,18 +1,21 @@
-import { Button, Container } from '.'
-import Navbar from '../components/layout/Navbar'
 import Link from 'next/link'
 import Image from 'next/image'
-import Footer from '../components/layout/Footer'
 import Router from 'next/router'
-import { CheatsheetWLikesAndViews, useStore, useUser } from '../lib/store'
 import { FC, useEffect, useState } from 'react'
-import client from '../lib/client'
-import { GetStaticProps } from 'next'
-import PopularCheatsheets from '../components/layout/popularCheatsheets/PopularCheatsheets'
-import CheatsheetItem from '../components/pages/dashboard/CheatsheetItem'
+import type { GetStaticProps } from 'next'
 import { AiTwotoneLike } from 'react-icons/ai'
-import { UserType } from '../db/models/User'
 import Cookies from 'js-cookie'
+
+import { CheatsheetWLikesAndViews, useStore, useUser, client } from '@lib'
+import { UserType } from '@db'
+import {
+  PrimaryButton,
+  Container,
+  Navbar,
+  Footer,
+  PopularCheatsheets,
+  CheatsheetItem,
+} from '@components'
 
 const Dashboard = () => {
   const { user, setMyCheatsheets, myCheatsheets } = useStore((state) => ({
@@ -79,38 +82,40 @@ const Dashboard = () => {
       <Navbar />
 
       <div className="flex items-center mt-10 gap-2 justify-between">
-        <div className="flex gap-2 items-center">
-          <h3 className="font-bold text-2xl">
-            Welcome back{' '}
-            <span className="text-primary-pink-1">
-              {user?.name?.split(' ')[0]}
-            </span>
-          </h3>
-          <div className="self-center">
-            <Image
-              className="object-cover rounded-full"
-              width={40}
-              height={40}
-              src={user?.profile_picture as string}
-              alt={user?.name}
-            />
+        <div className="flex flex-col gap-2 items-start md:flex-row md:justify-between w-full">
+          <div className="flex items-center gap-2">
+            <h3 className="font-bold text-2xl">
+              Welcome back{' '}
+              <span className="text-primary-pink-1">
+                {user?.name?.split(' ')[0]}
+              </span>
+            </h3>
+            <div className="self-center">
+              <Image
+                className="object-cover rounded-full"
+                width={40}
+                height={40}
+                src={user?.profile_picture as string}
+                alt={user?.name}
+              />
+            </div>
           </div>
+          <button
+            onClick={signOutHandler}
+            className="hover:bg-gray-200 cursor-pointer px-5 py-2"
+          >
+            Sign Out
+          </button>
         </div>
-        <button
-          onClick={signOutHandler}
-          className="hover:bg-gray-200 cursor-pointer px-5 py-2"
-        >
-          Sign Out
-        </button>
       </div>
-      <Button
+      <PrimaryButton
         onClick={() => {
           Router.push('/create')
         }}
         className="mt-10"
       >
         Create New cheatsheet
-      </Button>
+      </PrimaryButton>
       <hr className="mt-10" />
 
       <h4 className="font-bold text-3xl mt-10 mb-5 text-primary-dark-1">
@@ -170,7 +175,7 @@ const FavoriteCheatsheetItem: FC<{
 }> = ({ cheatsheet }) => {
   return (
     <div className="bg-white p-7 py-10 pb-7 rounded-3xl">
-      <div className="flex text-4xl items-center gap-5">
+      <div className="flex text-2xl items-start gap-5">
         <Link href={`/cheatsheets/${cheatsheet._id}`}>
           <a>
             <h2 className="font-extrabold text-primary-dark-1">

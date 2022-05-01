@@ -1,68 +1,22 @@
-import {
-  DetailedHTMLProps,
-  FC,
-  FormEventHandler,
-  HTMLAttributes,
-  InputHTMLAttributes,
-  useEffect,
-  useState,
-} from 'react'
+import { FormEventHandler, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { Button, Container } from '.'
-import TextArea from '../components/inputs/TextArea'
-import Footer from '../components/layout/Footer'
-import Navbar from '../components/layout/Navbar'
-import H1 from '../components/typography/H1'
-import client from '../lib/client'
 import Router from 'next/router'
 import { useLocalStorage } from 'react-use'
 import Head from 'next/head'
-import { useStore } from '../lib/store'
 import { GetStaticProps } from 'next'
 
-interface ILabelProps
-  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}
-
-export const Label: FC<ILabelProps> = ({ children, className, ...rest }) => {
-  return (
-    <div
-      className={`text-[28px] font-bold text-primary-dark-1 ${className}`}
-      {...rest}
-    >
-      {children}
-    </div>
-  )
-}
-
-interface IInputProps
-  extends DetailedHTMLProps<
-    InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  > {}
-
-const Input: FC<IInputProps> = ({ className, ...rest }) => {
-  return (
-    <input
-      className={`bg-primary-2 py-4 px-8 w-full max-w-lg text-primary-dark-1 placeholder-slate-600 rounded-lg outline-primary-pink-1 ${className}`}
-      {...rest}
-      type="text"
-    />
-  )
-}
-
-interface IDetailProps
-  extends DetailedHTMLProps<
-    HTMLAttributes<HTMLParagraphElement>,
-    HTMLParagraphElement
-  > {}
-
-export const Detail: FC<IDetailProps> = ({ className, children, ...rest }) => {
-  return (
-    <p className={`text-xs md:text-sm text-gray-500 ${className}`}>
-      {children}
-    </p>
-  )
-}
+import {
+  Container,
+  Footer,
+  H1,
+  Navbar,
+  PrimaryButton,
+  TextArea,
+  Detail,
+  Label,
+  PrimaryInput,
+} from '@components'
+import { client, useStore } from '@lib'
 
 const useCards = () => {
   const [cardInputs, setCardInputs] = useState<string[]>([''])
@@ -129,7 +83,7 @@ const Create = () => {
       })
       .then((r) => {
         Router.push(`/cheatsheets/${r.data._id}`)
- 
+
         setCheatSheetName('')
         setCardInputs([''])
       })
@@ -161,7 +115,7 @@ const Create = () => {
         </h2>
 
         <Label className="mt-5">Cheatsheet name</Label>
-        <Input
+        <PrimaryInput
           onChange={(e) => {
             setCheatSheetName(e.target.value)
           }}
@@ -197,16 +151,16 @@ const Create = () => {
             )
           })}
           <div className="flex flex-col md:flex-row md:items-center gap-x-5">
-            <Button
+            <PrimaryButton
               type="button"
               onClick={addNewCard}
               className="w-max text-base py-3"
             >
               Next card
-            </Button>
-            <Button type="submit" className="w-max text-base py-3">
+            </PrimaryButton>
+            <PrimaryButton type="submit" className="w-max text-base py-3">
               Publish Cheatsheet
-            </Button>
+            </PrimaryButton>
           </div>
         </div>
         <Footer />

@@ -1,10 +1,10 @@
-import CheatSheet from "../../../db/models/Cheatsheet"
-import Favorite from "../../../db/models/Favourite"
-import Like from "../../../db/models/Like"
-import User from "../../../db/models/User"
-import View from "../../../db/models/View"
-import withUser from "../../../middlewares/withUser"
-import { ApiHandler } from "../../../types"
+import CheatSheet from "@db/models/Cheatsheet"
+import Favorite from "@db/models/Favourite"
+import Like from "@db/models/Like"
+import View from "@db/models/View"
+
+import { withUser } from "@middlewares"
+import { ApiHandler } from "@types"
 
 const handler: ApiHandler = async (req, res) => {
   if (req.method !== "GET") {

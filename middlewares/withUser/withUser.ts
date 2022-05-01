@@ -1,11 +1,10 @@
-import User from "../db/models/User"
 import JWT from "jsonwebtoken"
 import TwitterApi from "twitter-api-v2"
-import { ApiHandler } from "../types"
 
-type WithUser = (handler: ApiHandler) => ApiHandler
+import User from "@db/models/User"
+import { WithUser } from "."
 
-const withUser: WithUser = (handler) => {
+export const withUser: WithUser = (handler) => {
   return async (req, res) => {
     try {
       const tokenWithBearer = req.headers.authorization
@@ -41,5 +40,3 @@ const withUser: WithUser = (handler) => {
     }
   }
 }
-
-export default withUser

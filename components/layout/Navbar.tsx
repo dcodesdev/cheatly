@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useUser } from '../../lib/store'
 
-const Navbar = () => {
+export const Navbar = () => {
   const { user } = useUser()
 
   return (
@@ -28,5 +28,3 @@ const Navbar = () => {
     </div>
   )
 }
-
-export default Navbar

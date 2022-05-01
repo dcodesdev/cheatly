@@ -1,6 +1,6 @@
-import { NextApiRequest, NextApiResponse } from "next"
-import { TwitterApi } from "twitter-api-v2"
-import { UserType } from "./db/models/User"
+import type { NextApiRequest, NextApiResponse } from "next"
+import type { TwitterApi } from "twitter-api-v2"
+import type { UserType } from "@db"
 
 export type Request = NextApiRequest & { user: UserType; client: TwitterApi }
 

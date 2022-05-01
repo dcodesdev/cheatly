@@ -7,7 +7,7 @@ import {
   Document,
   Types,
 } from "mongoose"
-import CheatSheet from "./Cheatsheet"
+import CheatSheet from "@db/models/Cheatsheet"
 import "../db"
 
 interface ViewType extends Document, SchemaTimestampsConfig {

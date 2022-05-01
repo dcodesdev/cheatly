@@ -1,51 +1,24 @@
-import client from '../lib/client'
 import type { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Router from 'next/router'
-import { ButtonHTMLAttributes, DetailedHTMLProps, FC } from 'react'
-import Footer from '../components/layout/Footer'
-import H1 from '../components/typography/H1'
-import H2 from '../components/typography/H2'
-import H3 from '../components/typography/H3'
-import CheatSheet from '../db/models/Cheatsheet'
-import Cookies from 'js-cookie'
-import PopularCheatsheets from '../components/layout/popularCheatsheets/PopularCheatsheets'
-import { useUser } from '../lib/store'
+import { FC } from 'react'
 
-export const Container: FC<{ children: any }> = ({ children }) => {
-  return <div className="mx-auto max-w-7xl pt-5 px-5">{children}</div>
-}
+import CheatSheet from '@db/models/User'
+import User from '@db/models/User'
+import { useUser } from '@lib'
+import {
+  PrimaryButton,
+  Container,
+  IHomeProps,
+  H1,
+  H2,
+  H3,
+  Footer,
+  PopularCheatsheets,
+} from '@components'
 
-interface IButtonProps
-  extends DetailedHTMLProps<
-    ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  > {
-  variant?: 1 | 2
-}
-
-export const Button: FC<IButtonProps> = ({
-  children,
-  className,
-  variant = 1,
-  ...rest
-}) => {
-  return (
-    <button
-      className={`bg-primary-4 shadow-lg text-primary-dark-1 p-4 rounded-md font-bold text-xl my-2 hover:opacity-80 duration-200 active:translate-y-1 ${
-        variant === 1
-          ? 'bg-primary-4'
-          : 'bg-primary-2 border-2 border-primary-4'
-      } ${className}`}
-      {...rest}
-    >
-      {children}
-    </button>
-  )
-}
-
-const Home: FC<{ count: number }> = ({ count }) => {
+const Home: FC<IHomeProps> = ({ cheatsheetCount, userCount }) => {
   const { user } = useUser()
 
   const createCheatsheetHandler = () => {
@@ -77,10 +50,17 @@ const Home: FC<{ count: number }> = ({ count }) => {
           </H3>
 
           <div className="font-bold text-primary-dark-1 text-center">
-            <span className="text-primary-pink-1">{count} cheatsheets </span>
-            are hosted on cheater.link
+            <span className="text-primary-pink-1">
+              {cheatsheetCount} cheatsheets{' '}
+            </span>
+            are hosted on cheater.link{' '}
+            <span className="text-primary-pink-1">
+              by {userCount} {userCount === 1 ? 'user' : 'users'}.
+            </span>
           </div>
-          <Button onClick={createCheatsheetHandler}>Create a cheatsheet</Button>
+          <PrimaryButton onClick={createCheatsheetHandler}>
+            Create a cheatsheet
+          </PrimaryButton>
           <hr className="my-10 border bg-primary-dark-1 rounded-full h-2 opacity-90 w-full" />
 
           <H2 className="md:w-10/12 text-center mt-10">
@@ -107,11 +87,12 @@ const Home: FC<{ count: number }> = ({ count }) => {
   )
 }
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  const count = await CheatSheet.countDocuments()
+export const getStaticProps: GetStaticProps = async () => {
+  const cheatsheetCount = await CheatSheet.countDocuments()
+  const userCount = await User.countDocuments()
 
   return {
-    props: { count },
+    props: { cheatsheetCount, userCount },
     revalidate: 100,
   }
 }

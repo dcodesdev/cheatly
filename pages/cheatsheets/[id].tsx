@@ -1,28 +1,24 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Router, { useRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
-import { Button, Container } from '..'
-import Footer from '../../components/layout/Footer'
-import CheatSheet, { CheatsheetType } from '../../db/models/Cheatsheet'
 import { useCopyToClipboard } from 'react-use'
 import toast from 'react-hot-toast'
 import Head from 'next/head'
-import { useStore } from '../../lib/store'
-import Card from '../../components/pages/cheatsheet/Card'
-import H1 from '../../components/typography/H1'
-import Navbar from '../../components/layout/Navbar'
-import client from '../../lib/client'
-import View from '../../db/models/View'
-import { UserType } from '../../db/models/User'
 import Image from 'next/image'
+import Link from 'next/link'
 import {
   AiFillLike,
   AiFillStar,
   AiOutlineLike,
   AiOutlineStar,
 } from 'react-icons/ai'
-import Like from '../../db/models/Like'
-import Link from 'next/link'
+
+import { PrimaryButton, Container, Footer, Card, H1, Navbar } from '@components'
+import { useStore, client } from '@lib'
+import { CheatsheetType, UserType } from '@db'
+import View from '@db/models/View'
+import Like from '@db/models/Like'
+import CheatSheet from '@db/models/Cheatsheet'
 
 interface Props {
   cheatsheet: CheatsheetType & {
@@ -135,7 +131,7 @@ const CheatsheetPage: FC<Props> = ({ cheatsheet }) => {
       <Container>
         <Navbar />
         <H1 className="mt-10">{cheatsheet.name}</H1>
-        <div className="text-[#949494] font-bold text-3xl mt-5 flex items-center gap-2">
+        <div className="text-[#949494] font-bold text-xl mt-5 flex items-center gap-2">
           <p>Cheatsheet by </p>
           <Image
             width={40}
@@ -194,12 +190,12 @@ const CheatsheetPage: FC<Props> = ({ cheatsheet }) => {
         </div>
 
         <div className="mt-10 flex items-center gap-5">
-          <Button onClick={prevHandler}>Previous card</Button>
-          <Button onClick={nextHandler}>Next card</Button>
-          <Button onClick={shareHandler} variant={2}>
-            Share
-          </Button>
+          <PrimaryButton onClick={prevHandler}>Previous card</PrimaryButton>
+          <PrimaryButton onClick={nextHandler}>Next card</PrimaryButton>
         </div>
+        <button className="px-5 py-2 hover:bg-gray-200" onClick={shareHandler}>
+          Share
+        </button>
         <Footer />
       </Container>
     </>
