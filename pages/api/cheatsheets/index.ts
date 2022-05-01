@@ -4,7 +4,7 @@ import { ApiHandler } from "../../../types"
 
 const POST: ApiHandler = async (req, res) => {
   try {
-    let { name, author_name, cards } = req.body
+    let { name, cards } = req.body
 
     if (!name || !cards) {
       throw new Error("Missing required fields")
@@ -19,7 +19,6 @@ const POST: ApiHandler = async (req, res) => {
     const cheatsheet = await CheatSheet.create({
       user_id: req.user._id,
       name,
-      author_name,
       cards,
     })
 

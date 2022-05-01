@@ -1,8 +1,8 @@
 import { TailSpin } from 'react-loader-spinner'
-import { useLoading } from '../lib/store'
+import { useStore } from '../lib/store'
 
 const Loader = () => {
-  const { loading } = useLoading()
+  const loading = useStore((state) => state.loading)
 
   if (!loading) return <></>
 

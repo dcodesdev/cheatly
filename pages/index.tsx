@@ -1,4 +1,4 @@
-import axios from '../lib/client'
+import client from '../lib/client'
 import type { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -9,6 +9,9 @@ import H1 from '../components/typography/H1'
 import H2 from '../components/typography/H2'
 import H3 from '../components/typography/H3'
 import CheatSheet from '../db/models/Cheatsheet'
+import Cookies from 'js-cookie'
+import PopularCheatsheets from '../components/layout/popularCheatsheets/PopularCheatsheets'
+import { useUser } from '../lib/store'
 
 export const Container: FC<{ children: any }> = ({ children }) => {
   return <div className="mx-auto max-w-7xl pt-5 px-5">{children}</div>
@@ -30,7 +33,7 @@ export const Button: FC<IButtonProps> = ({
 }) => {
   return (
     <button
-      className={`bg-primary-4 shadow-lg text-primary-dark-1 p-5 rounded-md font-bold text-2xl my-2 hover:opacity-80 duration-200 active:translate-y-1 ${
+      className={`bg-primary-4 shadow-lg text-primary-dark-1 p-4 rounded-md font-bold text-xl my-2 hover:opacity-80 duration-200 active:translate-y-1 ${
         variant === 1
           ? 'bg-primary-4'
           : 'bg-primary-2 border-2 border-primary-4'
@@ -43,15 +46,12 @@ export const Button: FC<IButtonProps> = ({
 }
 
 const Home: FC<{ count: number }> = ({ count }) => {
+  const { user } = useUser()
+
   const createCheatsheetHandler = () => {
-    axios
-      .get('/api/auth/me')
-      .then((r) => {
-        Router.push('/create')
-      })
-      .catch((e) => {
-        Router.push('/api/auth/twitter/login')
-      })
+    if (user) return Router.push('/dashboard')
+
+    Router.push('/api/auth/twitter/login')
   }
 
   return (
@@ -98,6 +98,9 @@ const Home: FC<{ count: number }> = ({ count }) => {
             is to share your cheatsheets.
           </H3>
         </div>
+        <hr className="my-10" />
+        <PopularCheatsheets />
+
         <Footer />
       </Container>
     </>

@@ -17,9 +17,9 @@ const withUser: WithUser = (handler) => {
         id: string
       }
 
-      const user = await User.findById(id).select(
-        "twitter_access_token twitter_access_secret"
-      )
+      const user = await User.findById(id)
+        .select("twitter_access_token twitter_access_secret")
+        .lean()
 
       if (!user) throw Error()
 

@@ -1,10 +1,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import { useUser } from '../../lib/store'
 
 const Navbar = () => {
+  const { user } = useUser()
+
   return (
-    <div>
+    <div className="flex items-center gap-2">
       <Link href="/">
         <a>
           <Image
@@ -15,6 +17,14 @@ const Navbar = () => {
           />
         </a>
       </Link>
+
+      {user && (
+        <Link href="/dashboard">
+          <a>
+            <p className="font-bold text-2xl text-primary-dark-1">Dashboard</p>
+          </a>
+        </Link>
+      )}
     </div>
   )
 }
