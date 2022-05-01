@@ -30,7 +30,7 @@ const Home: FC<IHomeProps> = ({ cheatsheetCount, userCount }) => {
   return (
     <>
       <Head>
-        <title>Cheater | A simple cheatsheet generator</title>
+        <title>Cheatly | A simple cheatsheet generator</title>
         <meta
           name="description"
           content="Cheater is a simple cheatsheet generator. Create cheatsheets and share them with your audience."
