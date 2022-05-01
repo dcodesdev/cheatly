@@ -96,10 +96,10 @@ const Create = () => {
   return (
     <Container>
       <Head>
-        <title>Cheater | Create a cheatsheet</title>
+        <title>Cheatly | Create a cheatsheet</title>
         <meta
           name="description"
-          content="Cheater is a simple cheatsheet generator. Create cheatsheets and share them with your audience."
+          content="Cheatly is a simple cheatsheet generator. Create cheatsheets and share them with your audience."
         />
       </Head>
 

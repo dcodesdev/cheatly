@@ -125,7 +125,7 @@ const CheatsheetPage: FC<Props> = ({ cheatsheet }) => {
   return (
     <>
       <Head>
-        <title>Cheater | {cheatsheet.name} </title>
+        <title>Cheatly | {cheatsheet.name} </title>
       </Head>
 
       <Container>

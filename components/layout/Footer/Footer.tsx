@@ -14,7 +14,7 @@ export const Footer = () => {
         </Link>
       </div>
       <div className="text-center justify-center flex items-center gap-2">
-        <Link href="https://github.com/dawsoncodes/cheater">
+        <Link href="https://github.com/dawsoncodes/cheatly">
           <a target="_blank">
             <div className="justify-center flex gap-2 items-center">
               <p>Contribute on</p>

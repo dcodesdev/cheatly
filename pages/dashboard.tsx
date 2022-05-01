@@ -81,10 +81,10 @@ const Dashboard = () => {
   return (
     <Container>
       <Head>
-        <title>Cheater | Dashboard</title>
+        <title>Cheatly | Dashboard</title>
         <meta
           name="description"
-          content="Cheater is a simple cheatsheet generator. Create cheatsheets and share them with your audience."
+          content="Cheatly is a simple cheatsheet generator. Create cheatsheets and share them with your audience."
         />
       </Head>
       <Navbar />

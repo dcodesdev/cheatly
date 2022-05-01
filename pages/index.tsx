@@ -33,7 +33,7 @@ const Home: FC<IHomeProps> = ({ cheatsheetCount, userCount }) => {
         <title>Cheatly | A simple cheatsheet generator</title>
         <meta
           name="description"
-          content="Cheater is a simple cheatsheet generator. Create cheatsheets and share them with your audience."
+          content="Cheatly is a simple cheatsheet generator. Create cheatsheets and share them with your audience."
         />
       </Head>
       <Container>
@@ -42,9 +42,9 @@ const Home: FC<IHomeProps> = ({ cheatsheetCount, userCount }) => {
             width={200}
             height={200}
             src="/assets/logo.svg"
-            alt="cheater logo"
+            alt="cheatly logo"
           />
-          <H1 className="text-center">Cheater</H1>
+          <H1 className="text-center">Cheatly</H1>
           <H3 className="md:w-1/2 py-10 pt-5 text-center">
             Create a cheatsheet, and share it with your audience
           </H3>
@@ -53,7 +53,7 @@ const Home: FC<IHomeProps> = ({ cheatsheetCount, userCount }) => {
             <span className="text-primary-pink-1">
               {cheatsheetCount} cheatsheets{' '}
             </span>
-            are hosted on cheater.link{' '}
+            are hosted on Cheatly{' '}
             <span className="text-primary-pink-1">
               by {userCount} {userCount === 1 ? 'user' : 'users'}.
             </span>
