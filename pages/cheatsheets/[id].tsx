@@ -225,6 +225,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
           likes,
         },
       },
+      revalidate: 10,
     }
   } catch (error) {
     return {
