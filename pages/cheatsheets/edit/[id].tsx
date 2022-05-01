@@ -96,7 +96,7 @@ const Edit = () => {
   return (
     <Container>
       <Head>
-        <title>Cheater | Create a cheatsheet</title>
+        <title>Cheater | Edit</title>
       </Head>
 
       <Navbar />

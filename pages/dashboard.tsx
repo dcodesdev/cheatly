@@ -5,6 +5,7 @@ import { FC, useEffect, useState } from 'react'
 import type { GetStaticProps } from 'next'
 import { AiTwotoneLike } from 'react-icons/ai'
 import Cookies from 'js-cookie'
+import Head from 'next/head'
 
 import { CheatsheetWLikesAndViews, useStore, useUser, client } from '@lib'
 import { UserType } from '@db'
@@ -79,6 +80,13 @@ const Dashboard = () => {
 
   return (
     <Container>
+      <Head>
+        <title>Cheater | Dashboard</title>
+        <meta
+          name="description"
+          content="Cheater is a simple cheatsheet generator. Create cheatsheets and share them with your audience."
+        />
+      </Head>
       <Navbar />
 
       <div className="flex items-center mt-10 gap-2 justify-between">

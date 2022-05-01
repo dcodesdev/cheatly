@@ -97,6 +97,10 @@ const Create = () => {
     <Container>
       <Head>
         <title>Cheater | Create a cheatsheet</title>
+        <meta
+          name="description"
+          content="Cheater is a simple cheatsheet generator. Create cheatsheets and share them with your audience."
+        />
       </Head>
 
       <Navbar />
