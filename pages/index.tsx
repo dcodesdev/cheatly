@@ -18,6 +18,19 @@ import {
   PopularCheatsheets,
 } from '@components'
 
+const desc =
+  'Cheatly is a simple cheatsheet generator. Create cheatsheets and share them with your audience.'
+
+const title = 'Cheatly | A simple cheatsheet generator'
+
+const link = 'https://cheatly.vercel.app'
+
+const siteName = 'Cheatly'
+
+const image = 'https://i.ibb.co/Wx91dNP/cheatly.png'
+
+const color = '#F7F7F7'
+
 const Home: FC<IHomeProps> = ({ cheatsheetCount, userCount }) => {
   const { user } = useUser()
 
@@ -30,11 +43,24 @@ const Home: FC<IHomeProps> = ({ cheatsheetCount, userCount }) => {
   return (
     <>
       <Head>
-        <title>Cheatly | A simple cheatsheet generator</title>
+        <title>{title}</title>
         <meta
           name="description"
           content="Cheatly is a simple cheatsheet generator. Create cheatsheets and share them with your audience."
         />
+
+        <meta name="description" content={desc} />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={desc} />
+        <meta property="og:url" content={link} />
+        <meta property="og:site_name" content={siteName} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={desc} />
+        <meta name="twitter:image" content={image} />
+        <meta name="theme-color" content={color} />
       </Head>
       <Container>
         <div className="w-full flex flex-col items-center pt-20 justify-center mx-auto">
