@@ -19,6 +19,7 @@
     "moment": "^2.29.3",
     "mongoose": "^6.3.0",
     "next": "12.1.5",
+    "prettier": "^2.6.2",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-hot-toast": "^2.2.0",
