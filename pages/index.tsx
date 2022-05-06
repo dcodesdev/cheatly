@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Router from 'next/router'
 import { FC } from 'react'
 
-import CheatSheet from '@db/models/User'
+import CheatSheet from '@db/models/Cheatsheet'
 import User from '@db/models/User'
 import { useUser } from '@lib'
 import {
