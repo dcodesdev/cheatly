@@ -1,12 +1,13 @@
-import TwitterApi from "twitter-api-v2"
-import { serialize } from "cookie"
+import TwitterApi from 'twitter-api-v2'
+import { serialize } from 'cookie'
 
-import User from "@db/models/User"
-import { genToken } from "@lib"
-import { ApiHandler } from "@types"
+import User from '@db/models/User'
+import { genToken } from '@lib'
+import { ApiHandler } from '@types'
+import dayjs from 'dayjs'
 
 const handler: ApiHandler = async (req, res) => {
-  if (req.method !== "GET") {
+  if (req.method !== 'GET') {
     res.status(405).end()
     return
   }
@@ -21,10 +22,10 @@ const GET: ApiHandler = async (req, res) => {
   try {
     if (
       !oauth_verifier ||
-      typeof oauth_token !== "string" ||
-      typeof oauth_verifier !== "string"
+      typeof oauth_token !== 'string' ||
+      typeof oauth_verifier !== 'string'
     )
-      return res.status(400).json({ message: "Error" })
+      return res.status(400).json({ message: 'Error' })
 
     const client = new TwitterApi({
       appKey: process.env.TWITTER_API_KEY as string,
@@ -35,7 +36,7 @@ const GET: ApiHandler = async (req, res) => {
 
     const result = await client.login(oauth_verifier)
 
-    if (!result) throw Error("Invalid request!")
+    if (!result) throw Error('Invalid request!')
 
     const userClient = new TwitterApi({
       appKey: process.env.TWITTER_API_KEY as string,
@@ -68,14 +69,20 @@ const GET: ApiHandler = async (req, res) => {
 
     const token = genToken(user._id)
 
-    if (!token) throw Error("Internal server error!")
+    if (!token) throw Error('Internal server error!')
 
     res
-      .setHeader("Set-Cookie", serialize("token", token, { path: "/" }))
+      .setHeader(
+        'Set-Cookie',
+        serialize('token', token, {
+          expires: dayjs().add(30, 'days').toDate(),
+          path: '/',
+        })
+      )
       .redirect(`${process.env.CLIENT_URL}/dashboard`)
   } catch (error) {
     if (error instanceof Error)
-      res.status(500).json({ message: "Internal server error." })
+      res.status(500).json({ message: 'Internal server error.' })
   }
 }
 
